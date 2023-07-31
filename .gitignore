@@ -11,3 +11,7 @@
 /.vs/quanlykhachsan/v17/.futdcache.v2
 /.vs/quanlykhachsan/v17/.suo
 /.vs/quanlykhachsan/v17/fileList.bin
+
+/.vs
+/obj
+/bin

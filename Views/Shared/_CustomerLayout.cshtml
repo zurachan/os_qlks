@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" type="image/x-icon" href="~/customer/images/logo.png">
+    @RenderSection("styles", required: false)
+</head>
+<body>
+
+    <div class="main">
+        <div class="main-wrapper">
+            <header class="header">
+                <a asp-controller="Customer" asp-action="Index" class="logo">
+                    <img alt="" src="~/customer/images/logo.png">
+                </a>
+                <nav class="navbar">
+                    <div class="menu-item">
+                        <a asp-controller="Customer" asp-action="PhongSuites" class="item">Phòng & Suites</a>
+                    </div>
+                    <div class="menu-item">
+                        <a asp-controller="Customer" asp-action="NhaHang" class="item">Nhà hàng</a>
+                    </div>
+                    <div class="menu-item">
+                        <a asp-controller="Customer" asp-action="TienNghi" class="item">Tiện nghi</a>
+                    </div>
+                    <div class="menu-item">
+                        <a asp-controller="Customer" asp-action="HoiNghi" class="item">Hội nghị & Sự kiện</a>
+                    </div>
+                    <div class="menu-item">
+                        <a asp-controller="Customer" asp-action="UuDai" class="item">Ưu đãi</a>
+                    </div>
+                </nav>
+                <div class="navbar-button">
+                    <a asp-controller="Customer" asp-action="ListRoom" class="button">Giữ chỗ ngay</a>
+                </div>
+            </header>
+            @RenderBody()
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="widget-main">
+                        <div class="widget-title">NATCY HOTEL</div>
+                        <div class="widget-content">
+                            <p>828 Đ. Sư Vạn Hạnh, Phường 12, Quận 10, Thành phố Hồ Chí Minh</p>
+                            <p>Điện thoại: +84 (0) 1122 1144 </p>
+                            <p>Email: natcyhotel@natcy.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="widget-main">
+                        <div class="widget-title">VỀ CHÚNG TÔI</div>
+                        <div class="widget-content">
+                            <div class="widget-detail">
+                                <ul>
+                                    <li>
+                                        <a href="#">ABOUT NATCY</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">CAREER</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">CONTACT US</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="widget-main">
+                        <div class="widget-title">HƯỚNG DẪN</div>
+                        <div class="widget-content">
+                            <div class="widget-detail">
+                                <ul>
+                                    <li>
+                                        <a href="#">MAKE A RESERVATION </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">ROOMS</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="widget-main">
+                        <div class="widget-title">GIỮ LIÊN LẠC</div>
+                        <div class="widget-content">
+                            <div class="widget-detail">
+                                <ul>
+                                    <li>
+                                        <a href="#">PLAN AN EVENT </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">REQUEST AN INVOICE </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-coppyright">
+                <div class="footer-coppyright-content">
+                    <span class="footer-coppyright-content-text">
+                        © THE NATCY 2022 | Privacy Policy
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-system">
+            <a href="#"><img src="~/customer/images/logo.png"></a>
+        </div>
+    </footer>
+    <script src="~/customer/js/HomeUser.js"></script>
+</body>
+</html>

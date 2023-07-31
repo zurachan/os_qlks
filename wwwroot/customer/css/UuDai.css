@@ -1,0 +1,219 @@
+.header {
+    width: 100%;
+    height: 100px;
+    display:flex;
+    z-index: 30;
+    position: fixed;
+    background-size: cover;
+    background-position: 50% 0;
+    font-family: 'Roboto',sans-serif;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 8%;
+    border-bottom: 1px solid rgb(78, 76, 76);
+    background-color: black;
+  }
+  .navbar{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  .logo img{
+    display: block;
+    width:120px;
+    height:120px;
+  }
+  .navbar-button{
+    border: 2px solid #EFC75E;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    align-items: center;
+    .button{
+      font-size: medium;
+      font-weight: bold;
+      font-style:initial;
+      color:#EFC75E;
+      text-decoration-line: none;
+    }
+  }
+  .navbar-button:hover{
+    background-color: #EFC75E;
+    .button{
+      font-size: medium;
+      font-weight: bold;
+      font-style:initial;
+      text-decoration-line: none;
+      color:white;
+    }
+  }
+  .menu-item{ 
+    text-align: center;
+    margin: 20px;
+    padding: 10px;
+    align-items: center;
+  }
+  .item{
+    font-size: medium;
+    font-weight: bold;
+    font-style:initial;
+    color: white;
+    text-decoration-line: none;
+  }
+  .item:hover{
+    font-size: medium;
+    font-weight: bold;
+    font-style:initial;
+    color:#EFC75E;
+    text-decoration-line:none ;
+  }
+  .slideshow-container {
+    width: 100%;
+      position: relative;
+      margin: auto;
+    }
+  .banner-text h1{
+    font-size: 5em;
+    font-family:'Dancing Script', cursive;
+    position: absolute;
+    height: 10%;
+    top: 180px;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    transition: all 0.5s 0.5s;
+  }
+  .btn-primary:active{
+    background-color: white;
+    text-decoration-line: none;
+    color:#EFC75E;
+    font-weight: bold;
+  }
+  .wrapper{
+    margin: 0;
+    padding:0;
+    width: 100%;
+    text-align: center;
+  }
+  .section-intro{
+    text-align: center;
+    border-bottom: 1px solid #EFC75E;
+  }
+  .section-intro h1{
+    font-weight: 500;
+    margin: 30px;
+    font-family: 'Dancing Script', cursive;
+  }
+  .section-special-list{
+    margin: 0px 80px;
+  }
+  .section-special-item{
+    border: 1px solid #EFC75E;
+    border-radius: 10px;
+    margin: 50px 20px;
+    height: 600px;
+    width:90% ;
+  }
+  .section-special-title{
+    font-size: 2em;
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+  }
+  .section-spacial-title a{
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    font-weight: bold;
+    padding:20px 0px;
+    text-decoration-line: none;
+  }
+  .section-spacial-title a:hover{
+    text-decoration-line: none;
+    color: #EFC75E;
+  }
+  .section-special-image{
+    overflow: hidden;
+  }
+  .section-special-image img{
+    width: 100%;
+    transition: 1s ease-in-out;
+    border-radius: 10px;
+  }
+  .section-special-image img:hover{
+    transition: all 0.5s ease 0s;
+    transform: scale(1.2);
+
+  }
+  .section-special-content{
+    width:100%;
+    text-align: left;
+    padding: 20px;
+  }
+  .section-special-discription{
+    font-size: 1em;
+    font-family: 'Dancing Script', cursive;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+  
+  .section-special-discription p{
+    max-height: 70px;
+    margin: 0;
+  }
+  .section-special-action a{
+    text-align: left;
+    color: #EFC75E;
+    text-decoration-line: none;
+  }
+  .section-special-action a:hover{
+    text-decoration-line: none;
+    color: rgb(228, 234, 190);
+  }
+
+  .footer{
+    background-color: black;
+    text-align: center;
+  }
+  .widget-main{
+    text-align: left;
+    padding: 10px;
+  }
+  .widget-title{
+    margin: 5px 0;
+    font-size: medium;
+    color: white;
+  }
+  .widget-content{
+    font-size: 1em;
+    font-family:'Times New Roman', Times, serif;
+    color: gray;
+  }
+  .widget-detail ul{
+    padding-left: 0px;
+    list-style: none;
+  }
+  .widget-detail ul li a{
+    color: gray;
+    text-decoration-line: none;
+  }
+  .widget-detail ul li a:hover{
+    font-size: 1em;
+    color: whitesmoke;
+    text-decoration-line: none;
+  }
+  span{
+    color:gray;
+    font-family:'Courier New', Courier, monospace;
+  }
+  .footer-system img{
+    width: 10%;
+    height: 10%;
+  }
+  

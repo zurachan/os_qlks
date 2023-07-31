@@ -1,0 +1,816 @@
+﻿@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewData["Title"] = "Đặt chỗ";
+}
+
+@section styles{
+    <link href="~/customer/css/ListRoom.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap">
+}
+
+<div class="banner">
+    <div class="banner-image">
+        <img src="~/customer/images/ListRoom.png" style="width:100%">
+    </div>
+    <div class="banner-cover">
+        <div class="banner-calendars">
+            <form method="get">
+                <div class="banner-calendars-item">
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#EFC75E;">
+                            calendar_today
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <input type="date" placeholder="Ngày đặt" class="date">
+                    </div>
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#8e6a0d;">
+                            sync_alt
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#EFC75E;">
+                            calendar_today
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <input type="date" placeholder="Ngày trả" class="date">
+                    </div>
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#EFC75E;">
+                            person
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle custom-btn" data-bs-toggle="dropdown">
+                                "Adults | Childrens | Room"
+                            </button>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-menu-select">
+                                    <label>Adults</label>
+                                    <input type="number" value="1" name="adult" class="form-control">
+                                </div>
+                                <div class="dropdown-menu-select">
+                                    <label>Children</label>
+                                    <input type="number" value="0" name="children" class="form-control">
+                                </div>
+                                <div class="dropdown-menu-select">
+                                    <label>Rooms</label>
+                                    <input type="number" value="1" name="room" class="form-control">
+                                </div>
+                                <div class="dropdown-menu-done">
+                                    <button type="submit">DONE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glyphicon">
+                        <button class="button-calendar" type="submit">Tìm phòng</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="list-room">
+                    <div class="room-item">
+                        <div class="room-type">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="room-image">
+                                        <img src="~/customer/images/PhongSuites1.jpg" style="width:100%">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="room-title">
+                                        <a href="#">Deluxe Double Room City View</a>
+                                    </div>
+                                    <div class="room-content">
+                                        <div class="room-icon">
+                                            <span class="material-symbols-outlined">
+                                                person
+                                            </span>
+                                            <span>  Sleeps 2  </span>
+                                            <span class="material-symbols-outlined">
+                                                bed
+                                            </span>
+                                            <span>  1 King bed  </span>
+                                            <span class="material-symbols-outlined">
+                                                bathtub
+                                            </span>
+                                            <span>  1 Bathroom  </span>
+                                        </div>
+                                        <div class="room-description">
+                                            <div class="room-description-1">
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>28m²</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>City view</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Non-smoking</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+
+                                                </span>
+                                                <span>Air conditioned</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Balcony</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Bath</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Hairdryer</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Desk</span>
+                                            </div>
+                                            <div class="room-description-2">
+                                                <ul>
+                                                    <li>King bed</li>
+                                                    <li>Free WIFI access</li>
+                                                    <li>Bathroom</li>
+                                                    <li>LED TV with international channels</li>
+                                                    <li>Mini bar & coffee and tea maker</li>
+                                                    <li>Safety box</li>
+                                                    <li>Free breakfast</li>
+                                                    <li>Free infinity swimming pool</li>
+                                                    <li>Late check-out 13:00 (subject to room availability)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-rate">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="rate-title">
+                                        <a href="#">Standard rate</a>
+                                    </div>
+                                    <div class="rate-content">
+                                        <div class="rate-content-1">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>Free Cancellation!</span>
+                                        </div>
+                                        <div class="rate-content-2">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>BREAKFAST</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="rate-price">
+                                        <div class="rate-cost">
+                                            4,220,000 VND
+                                        </div>
+                                        <div class="rate-description">
+                                            Cost for 1 night, 2 guests
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="room-item">
+                        <div class="room-type">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="room-image">
+                                        <img src="~/customer/images/PhongSuites2.jpg" style="width:100%">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="room-title">
+                                        <a href="#">Deluxe Double Room City View</a>
+                                    </div>
+                                    <div class="room-content">
+                                        <div class="room-icon">
+                                            <span class="material-symbols-outlined">
+                                                person
+                                            </span>
+                                            <span>  Sleeps 2  </span>
+                                            <span class="material-symbols-outlined">
+                                                bed
+                                            </span>
+                                            <span>  1 King bed  </span>
+                                            <span class="material-symbols-outlined">
+                                                bathtub
+                                            </span>
+                                            <span>  1 Bathroom  </span>
+                                        </div>
+                                        <div class="room-description">
+                                            <div class="room-description-1">
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>28m²</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>City view</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Non-smoking</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+
+                                                </span>
+                                                <span>Air conditioned</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Balcony</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Bath</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Hairdryer</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Desk</span>
+                                            </div>
+                                            <div class="room-description-2">
+                                                <ul>
+                                                    <li>King bed</li>
+                                                    <li>Free WIFI access</li>
+                                                    <li>Bathroom</li>
+                                                    <li>LED TV with international channels</li>
+                                                    <li>Mini bar & coffee and tea maker</li>
+                                                    <li>Safety box</li>
+                                                    <li>Free breakfast</li>
+                                                    <li>Free infinity swimming pool</li>
+                                                    <li>Late check-out 13:00 (subject to room availability)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-rate">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="rate-title">
+                                        <a href="#">Standard rate</a>
+                                    </div>
+                                    <div class="rate-content">
+                                        <div class="rate-content-1">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>Free Cancellation!</span>
+                                        </div>
+                                        <div class="rate-content-2">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>BREAKFAST</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="rate-price">
+                                        <div class="rate-cost">
+                                            4,220,000 VND
+                                        </div>
+                                        <div class="rate-description">
+                                            Cost for 1 night, 2 guests
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="room-item">
+                        <div class="room-type">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="room-image">
+                                        <img src="~/customer/images/PhongSuites3.jpg" style="width:100%">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="room-title">
+                                        <a href="#">Deluxe Double Room City View</a>
+                                    </div>
+                                    <div class="room-content">
+                                        <div class="room-icon">
+                                            <span class="material-symbols-outlined">
+                                                person
+                                            </span>
+                                            <span>  Sleeps 2  </span>
+                                            <span class="material-symbols-outlined">
+                                                bed
+                                            </span>
+                                            <span>  1 King bed  </span>
+                                            <span class="material-symbols-outlined">
+                                                bathtub
+                                            </span>
+                                            <span>  1 Bathroom  </span>
+                                        </div>
+                                        <div class="room-description">
+                                            <div class="room-description-1">
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>28m²</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>City view</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Non-smoking</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+
+                                                </span>
+                                                <span>Air conditioned</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Balcony</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Bath</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Hairdryer</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Desk</span>
+                                            </div>
+                                            <div class="room-description-2">
+                                                <ul>
+                                                    <li>King bed</li>
+                                                    <li>Free WIFI access</li>
+                                                    <li>Bathroom</li>
+                                                    <li>LED TV with international channels</li>
+                                                    <li>Mini bar & coffee and tea maker</li>
+                                                    <li>Safety box</li>
+                                                    <li>Free breakfast</li>
+                                                    <li>Free infinity swimming pool</li>
+                                                    <li>Late check-out 13:00 (subject to room availability)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-rate">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="rate-title">
+                                        <a href="#">Standard rate</a>
+                                    </div>
+                                    <div class="rate-content">
+                                        <div class="rate-content-1">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>Free Cancellation!</span>
+                                        </div>
+                                        <div class="rate-content-2">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>BREAKFAST</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="rate-price">
+                                        <div class="rate-cost">
+                                            4,220,000 VND
+                                        </div>
+                                        <div class="rate-description">
+                                            Cost for 1 night, 2 guests
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="room-item">
+                        <div class="room-type">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="room-image">
+                                        <img src="~/customer/images/PhongSuites1.jpg" style="width:100%">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="room-title">
+                                        <a href="#">Deluxe Double Room City View</a>
+                                    </div>
+                                    <div class="room-content">
+                                        <div class="room-icon">
+                                            <span class="material-symbols-outlined">
+                                                person
+                                            </span>
+                                            <span>  Sleeps 2  </span>
+                                            <span class="material-symbols-outlined">
+                                                bed
+                                            </span>
+                                            <span>  1 King bed  </span>
+                                            <span class="material-symbols-outlined">
+                                                bathtub
+                                            </span>
+                                            <span>  1 Bathroom  </span>
+                                        </div>
+                                        <div class="room-description">
+                                            <div class="room-description-1">
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>28m²</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>City view</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Non-smoking</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+
+                                                </span>
+                                                <span>Air conditioned</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Balcony</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Bath</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Hairdryer</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Desk</span>
+                                            </div>
+                                            <div class="room-description-2">
+                                                <ul>
+                                                    <li>King bed</li>
+                                                    <li>Free WIFI access</li>
+                                                    <li>Bathroom</li>
+                                                    <li>LED TV with international channels</li>
+                                                    <li>Mini bar & coffee and tea maker</li>
+                                                    <li>Safety box</li>
+                                                    <li>Free breakfast</li>
+                                                    <li>Free infinity swimming pool</li>
+                                                    <li>Late check-out 13:00 (subject to room availability)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-rate">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="rate-title">
+                                        <a href="#">Standard rate</a>
+                                    </div>
+                                    <div class="rate-content">
+                                        <div class="rate-content-1">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>Free Cancellation!</span>
+                                        </div>
+                                        <div class="rate-content-2">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>BREAKFAST</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="rate-price">
+                                        <div class="rate-cost">
+                                            4,220,000 VND
+                                        </div>
+                                        <div class="rate-description">
+                                            Cost for 1 night, 2 guests
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="room-item">
+                        <div class="room-type">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="room-image">
+                                        <img src="~/customer/images/PhongSuites2.jpg" style="width:100%">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="room-title">
+                                        <a href="#">Deluxe Double Room City View</a>
+                                    </div>
+                                    <div class="room-content">
+                                        <div class="room-icon">
+                                            <span class="material-symbols-outlined">
+                                                person
+                                            </span>
+                                            <span>  Sleeps 2  </span>
+                                            <span class="material-symbols-outlined">
+                                                bed
+                                            </span>
+                                            <span>  1 King bed  </span>
+                                            <span class="material-symbols-outlined">
+                                                bathtub
+                                            </span>
+                                            <span>  1 Bathroom  </span>
+                                        </div>
+                                        <div class="room-description">
+                                            <div class="room-description-1">
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>28m²</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>City view</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Non-smoking</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+
+                                                </span>
+                                                <span>Air conditioned</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Balcony</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Bath</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Hairdryer</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Desk</span>
+                                            </div>
+                                            <div class="room-description-2">
+                                                <ul>
+                                                    <li>King bed</li>
+                                                    <li>Free WIFI access</li>
+                                                    <li>Bathroom</li>
+                                                    <li>LED TV with international channels</li>
+                                                    <li>Mini bar & coffee and tea maker</li>
+                                                    <li>Safety box</li>
+                                                    <li>Free breakfast</li>
+                                                    <li>Free infinity swimming pool</li>
+                                                    <li>Late check-out 13:00 (subject to room availability)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-rate">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="rate-title">
+                                        <a href="#">Standard rate</a>
+                                    </div>
+                                    <div class="rate-content">
+                                        <div class="rate-content-1">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>Free Cancellation!</span>
+                                        </div>
+                                        <div class="rate-content-2">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>BREAKFAST</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="rate-price">
+                                        <div class="rate-cost">
+                                            4,220,000 VND
+                                        </div>
+                                        <div class="rate-description">
+                                            Cost for 1 night, 2 guests
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="room-item">
+                        <div class="room-type">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="room-image">
+                                        <img src="~/customer/images/PhongSuites3.jpg" style="width:100%">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="room-title">
+                                        <a href="#">Deluxe Double Room City View</a>
+                                    </div>
+                                    <div class="room-content">
+                                        <div class="room-icon">
+                                            <span class="material-symbols-outlined">
+                                                person
+                                            </span>
+                                            <span>  Sleeps 2  </span>
+                                            <span class="material-symbols-outlined">
+                                                bed
+                                            </span>
+                                            <span>  1 King bed  </span>
+                                            <span class="material-symbols-outlined">
+                                                bathtub
+                                            </span>
+                                            <span>  1 Bathroom  </span>
+                                        </div>
+                                        <div class="room-description">
+                                            <div class="room-description-1">
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>28m²</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>City view</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Non-smoking</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+
+                                                </span>
+                                                <span>Air conditioned</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Balcony</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Bath</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Hairdryer</span>
+                                                <span class="material-symbols-outlined">
+                                                    star
+                                                </span>
+                                                <span>Desk</span>
+                                            </div>
+                                            <div class="room-description-2">
+                                                <ul>
+                                                    <li>King bed</li>
+                                                    <li>Free WIFI access</li>
+                                                    <li>Bathroom</li>
+                                                    <li>LED TV with international channels</li>
+                                                    <li>Mini bar & coffee and tea maker</li>
+                                                    <li>Safety box</li>
+                                                    <li>Free breakfast</li>
+                                                    <li>Free infinity swimming pool</li>
+                                                    <li>Late check-out 13:00 (subject to room availability)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-rate">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="rate-title">
+                                        <a href="#">Standard rate</a>
+                                    </div>
+                                    <div class="rate-content">
+                                        <div class="rate-content-1">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>Free Cancellation!</span>
+                                        </div>
+                                        <div class="rate-content-2">
+                                            <span class="material-symbols-outlined">
+                                                task_alt
+                                            </span>
+                                            <span>BREAKFAST</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="rate-price">
+                                        <div class="rate-cost">
+                                            4,220,000 VND
+                                        </div>
+                                        <div class="rate-description">
+                                            Cost for 1 night, 2 guests
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="contact">
+                    <div class="contact-map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4602263428237!2d106.66478987444303!3d10.77601995920242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3ae5901877%3A0x42c37972de865906!2zODI4IMSQLiBTxrAgVuG6oW4gSOG6oW5oLCBQaMaw4budbmcgMTIsIFF14bqtbiAxMCwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1688894399962!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <div class="contact-section">
+                        <div class="contact-address">
+                            <span>
+                                <a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4602263428237!2d106.66478987444303!3d10.77601995920242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3ae5901877%3A0x42c37972de865906!2zODI4IMSQLiBTxrAgVuG6oW4gSOG6oW5oLCBQaMaw4budbmcgMTIsIFF14bqtbiAxMCwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1688894399962!5m2!1svi!2s">828 Đ. Sư Vạn Hạnh, Phường 12, Quận 10, Thành phố Hồ Chí Minh</a>
+                            </span>
+                        </div>
+                        <div class="contact-phone-email">
+                            <p>
+                                Phone:
+                                <span>
+                                    <a href="tel:02 2211 2239" class="contact-phone"> 02 2211 2233 </a>
+                                </span>
+                                <span> | </span>
+                                <span>
+                                    <a href="tel:03 3311 2239" class="contact-phone"> 03 3311 2233 </a>
+                                </span>
+                            </p>
+                            <p>
+                                E-mail:
+                                <span>
+                                    <a href="mailto:natcyhotel@natcyhotel.com" class="contact-email">natcyhotel@natcyhotel.com</a>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="contact-text">
+                            <p>Liên hệ với chúng tôi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

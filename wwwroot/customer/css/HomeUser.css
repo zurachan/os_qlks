@@ -1,0 +1,470 @@
+.header {
+  width: 100%;
+  height: 100px;
+  display:flex;
+  z-index: 30;
+  position: fixed;
+  background-size: cover;
+  background-position: 50% 0;
+  font-family: 'Roboto',sans-serif;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 8%;
+  border-bottom: 1px solid rgb(78, 76, 76);
+  background-color: black;
+}
+.navbar{
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  padding: 10px;
+}
+.logo img{
+  display: block;
+  width:120px;
+  height:120px;
+}
+.navbar-button{
+  border: 2px solid #EFC75E;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  margin: 10px;
+  padding: 10px;
+  align-items: center;
+  .button{
+    font-size: medium;
+    font-weight: bold;
+    font-style:initial;
+    color:#EFC75E;
+    text-decoration-line: none;
+  }
+}
+.navbar-button:hover{
+  background-color: #EFC75E;
+  .button{
+    font-size: medium;
+    font-weight: bold;
+    font-style:initial;
+    text-decoration-line: none;
+    color:white;
+  }
+}
+.menu-item{ 
+  text-align: center;
+  margin: 20px;
+  padding: 10px;
+  align-items: center;
+  
+}
+.item{
+  font-size: medium;
+  font-weight: bold;
+  font-style:initial;
+  color: white;
+  text-decoration-line: none;
+}
+.item:hover{
+  font-size: medium;
+  font-weight: bold;
+  font-style:initial;
+  color:#EFC75E;
+  text-decoration-line:none ;
+}
+* {box-sizing: border-box;}
+        body {font-family: Verdana, sans-serif;}
+        .mySlides {display: none;}
+        img {vertical-align: middle;}      
+        /* Slideshow container */
+        .slideshow-container {
+        width: 100%;
+          position: relative;
+          margin: auto;
+        }
+        /* The dots/bullets/indicators */
+        .dot {
+          height: 15px;
+          width: 15px;
+          margin: 0 2px;
+          background-color: #bbb;
+          border-radius: 50%;
+          display: inline-block;
+          transition: background-color 10s ease;
+        }       
+        .active {
+          background-color: #717171;
+        }        
+        /* Fading animation */
+        .fade {
+          animation-name: fade;
+          animation-duration: 10s;
+        }        
+        @keyframes fade {
+          from {opacity: 1} 
+          to {opacity: 1.1}
+        }        
+        /* On smaller screens, decrease text size */
+        @media only screen and (max-width: 300px) {
+          .text {font-size: 11px}
+        }
+.banner-text h1{
+  font-size: 5em;
+  font-family:'Dancing Script', cursive;
+  position: absolute;
+  height: 10%;
+  top: 180px;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color:white;
+  transition: all 0.5s 0.5s;
+}
+.banner-cover{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  position: relative;
+  top : -300px; 
+}
+.banner-calendars{
+  width: max-content;
+}
+.banner-calendars-item{
+  display: flex;
+  border: 2px solid #EFC75E;
+  border-radius: 20px;
+  padding: 5px 20px;
+  background-color: #fff;
+  align-items: center;
+}
+.glyphicon{
+  margin: 0px 10px;
+  padding: 0px 10px;
+}
+.date{
+  border:1px solid #EFC75E;
+  border-radius: 5px;
+  padding: 5px;
+}
+.dropdown .custom-btn{
+  background-color: rgba(0,0,0,0);
+  border:1px solid #EFC75E;
+  color : black;
+  transition: background-color 0.5s linear;
+}
+.dropdown .custom-btn:hover{
+  background-color: #bbb;
+}
+.dropdown-menu-select{
+  display: flex;
+}
+.dropdown-menu-select label{
+  width: 40px;
+  margin: 8px 20px;
+}
+.form-control{
+  margin: 4px;
+}
+.dropdown-menu-done{
+  text-align: center;
+  border: 1px solid #EFC75E;
+  border-radius: 5px;
+  margin: 5px;
+}
+.dropdown-menu-done button{
+  border: none;
+  background-color: white;
+}
+.button-calendar{
+  border: 2px solid #EFC75E;
+  background-color: #EFC75E;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  padding:4px;
+  text-decoration-line: none;
+}
+.button-calendar:hover{
+  background-color: white;
+  text-decoration-line: none;
+  color:#EFC75E;
+  font-weight: bold;
+}
+.btn-primary:active{
+  background-color: white;
+  text-decoration-line: none;
+  color:#EFC75E;
+  font-weight: bold;
+}
+.wrapper{
+  margin: 0;
+  padding:0;
+  width: 100%;
+  text-align: center;
+}
+.section-intro{
+  margin: 70px;
+  justify-content: center;
+}
+.section-intro-content{
+  margin: 0px 30px;
+  text-align: left;
+}
+.section-intro-title{
+  font-size: 2em;
+  font-weight: bold;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.section-intro-intro{
+  font-size: 1.5em;
+  line-height: 1.5;
+  font-family: 'Dancing Script', cursive;
+  color: #EFC75E;
+}
+.section-intro-desc{
+  font-size: 1em;
+  line-height: 1.5;
+  font-family: 'Roboto Mono', monospace;
+  padding: 20px 0px;
+}
+.section-intro-img img{
+  border-radius: 30px;
+  width: auto;
+}
+.section-title-discover{
+  font-size: 2em;
+  font-style: italic;
+  color:#EFC75E;
+  font-family: 'Dancing Script', cursive;
+}
+.section-title-introduce{
+  font-size: 2em;
+  font-weight: 50;
+  font-family: 'Dancing Script', cursive;
+}
+.section-image img{
+  width: 100%;
+  object-fit: contain;
+  padding: 20px;
+  border-radius: 40px;
+  /* opacity: 0.8; */
+}
+.section{
+  width: 100%;
+  text-align: center;
+  padding: 50px;
+  align-items: center;
+}
+.section-1-image img{
+  border-radius: 20px;
+  width: 100%;
+  left: 100%;
+}
+.section-1-content{
+  border: 2px solid #EFC75E;
+  width: 100%;
+  padding: 60px;
+  margin: 40px 0;
+  position: relative;
+  left:50px;
+  border-radius: 20px;
+  text-align: left;
+  align-items: center;
+}
+.section-1-content-title{
+  font-size: 2em;
+  font-family: 'Dancing Script', cursive;
+  text-align: left;
+  font-weight: bold;
+}
+.section-1-content-description{
+  font-size: 1em;
+  font-family: 'Cormorant Garamond', serif;
+  text-align: left;
+  font-weight: bold;
+}
+.section-1-content-action{
+  border-radius: 10px;
+  width: 30%;
+  text-align: center;
+  background-color: #EFC75E;
+  margin: 10px 0px;
+  text-decoration-line: none;
+}
+.section-1-content-action a{
+  color:white;
+  text-decoration-line: none;
+}
+.section-1-content-action a:hover{
+  color:grey;
+  text-decoration-line: none;
+}
+.section-2-image img{
+  border-radius: 20px;
+  width: 100%;
+  right: 100%;
+}
+.section-2-content{
+  border: 2px solid #EFC75E;
+  width: 100%;
+  padding: 60px;
+  margin: 40px 0;
+  position:relative;
+  right:50px;
+  border-radius: 20px;
+  text-align: right;
+  align-items: center;
+}
+.section-2-content-title{
+  font-size: 2em;
+  font-family: 'Dancing Script', cursive;
+  text-align: right;
+  font-weight: bold;
+}
+.section-2-content-discription{
+  font-size: 1em;
+  font-family: 'Cormorant Garamond', serif;
+  text-align: right;
+  font-weight: bold;
+}
+.section-2-content-action{
+  border-radius: 10px;
+  width: 30%;
+  background-color: #EFC75E;
+  margin: 10px 0px;
+  text-align: center;
+  text-decoration-line: none;
+}
+.section-2-content-action a{
+  color:white;
+  text-decoration-line: none;
+}
+.section-2-content-action a:hover{
+  color:grey;
+  text-decoration-line: none;
+}
+.section-special-list{
+  margin: 0px 80px;
+}
+.section-special-item{
+  border: 1px solid #EFC75E;
+  margin: 0px 20px;
+  height: 600px;
+  width:90% ;
+}
+.section-special-title{
+  font-size: 2em;
+  font-family: 'Dancing Script', cursive;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+}
+.section-spacial-title a{
+  font-family: 'Courier New', Courier, monospace;
+  color: black;
+  font-weight: bold;
+  padding:20px 0px;
+  text-decoration-line: none;
+}
+.section-spacial-title a:hover{
+  text-decoration-line: none;
+  color: #EFC75E;
+}
+.section-special-image{
+  overflow: hidden;
+}
+.section-special-image img{
+  width: 100%;
+  transition: 1s ease-in-out;
+}
+.section-special-image img:hover{
+  transition: all 0.5s ease 0s;
+  transform: scale(1.2);
+
+}
+.section-special-content{
+  width:100%;
+  text-align: left;
+  padding: 20px;
+}
+.section-special-discription{
+  font-size: 1em;
+  font-family: 'Dancing Script', cursive;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.section-special-discription p{
+  max-height: 70px;
+  margin: 0;
+}
+.section-animation{
+  margin: 100px;
+  text-align: left;
+}
+.section-animation-title{
+  font-size: 2em;
+  font-family:'Courier New', Courier, monospace;
+}
+.section-animation-hashtag{
+  font-size: 2em;
+  color: #EFC75E;
+  font-family: 'Dancing Script', cursive;
+}
+.section-animation-discription{
+  font-size: 1em;
+  font-family:'Courier New', Courier, monospace;
+  padding:10px 0px ;
+}
+.carousel-inner{
+  border-radius: 10px;
+}
+.card-group .card{
+  border: none;
+}
+.d-block{
+  margin: 10px;
+  border-radius: 5px;
+}
+.footer{
+  background-color: black;
+  text-align: center;
+}
+.widget-main{
+  text-align: left;
+  padding: 10px;
+}
+.widget-title{
+  margin: 5px 0;
+  font-size: medium;
+  color: white;
+}
+.widget-content{
+  font-size: 1em;
+  font-family:'Times New Roman', Times, serif;
+  color: gray;
+}
+.widget-detail ul{
+  padding-left: 0px;
+  list-style: none;
+}
+.widget-detail ul li a{
+  color: gray;
+  text-decoration-line: none;
+}
+.widget-detail ul li a:hover{
+  font-size: 1em;
+  color: whitesmoke;
+  text-decoration-line: none;
+}
+span{
+  color:gray;
+  font-family:'Courier New', Courier, monospace;
+}
+.footer-system img{
+  width: 10%;
+  height: 10%;
+}

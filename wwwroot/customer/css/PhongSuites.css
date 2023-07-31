@@ -1,0 +1,273 @@
+.header {
+    width: 100%;
+    height: 100px;
+    display:flex;
+    z-index: 30;
+    position: fixed;
+    background-size: cover;
+    background-position: 50% 0;
+    font-family: 'Roboto',sans-serif;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 8%;
+    border-bottom: 1px solid rgb(78, 76, 76);
+    background-color: black;
+  }
+  .navbar{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  .logo img{
+    display: block;
+    width:120px;
+    height:120px;
+  }
+  .navbar-button{
+    border: 2px solid #EFC75E;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    align-items: center;
+    .button{
+      font-size: medium;
+      font-weight: bold;
+      font-style:initial;
+      color:#EFC75E;
+      text-decoration-line: none;
+    }
+  }
+  .navbar-button:hover{
+    background-color: #EFC75E;
+    .button{
+      font-size: medium;
+      font-weight: bold;
+      font-style:initial;
+      text-decoration-line: none;
+      color:white;
+    }
+  }
+  .menu-item{ 
+    text-align: center;
+    margin: 20px;
+    padding: 10px;
+    align-items: center;
+    
+  }
+  .item{
+    font-size: medium;
+    font-weight: bold;
+    font-style:initial;
+    color: white;
+    text-decoration-line: none;
+  }
+  .item:hover{
+    font-size: medium;
+    font-weight: bold;
+    font-style:initial;
+    color:#EFC75E;
+    text-decoration-line:none ;
+  }
+  .banner-text h1{
+    font-size: 5em;
+    font-family:'Dancing Script', cursive;
+    position: absolute;
+    height: 10%;
+    top: 180px;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    transition: all 0.5s 0.5s;
+  }
+  .banner-cover{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    position: relative;
+    top : -300px; 
+  }
+  .banner-calendars{
+    width: max-content;
+  }
+  .banner-calendars-item{
+    display: flex;
+    border: 2px solid #EFC75E;
+    border-radius: 20px;
+    padding: 5px 20px;
+    background-color: #fff;
+    align-items: center;
+  }
+  .glyphicon{
+    margin: 0px 10px;
+    padding: 0px 10px;
+  }
+  .date{
+    border:1px solid #EFC75E;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  .dropdown .custom-btn{
+    background-color: rgba(0,0,0,0);
+    border:1px solid #EFC75E;
+    color : black;
+    transition: background-color 0.5s linear;
+  }
+  .dropdown .custom-btn:hover{
+    background-color: #bbb;
+  }
+  .dropdown-menu-select{
+    display: flex;
+  }
+  .dropdown-menu-select label{
+    width: 40px;
+    margin: 8px 20px;
+  }
+  .form-control{
+    margin: 4px;
+  }
+  .dropdown-menu-done{
+    text-align: center;
+    border: 1px solid #EFC75E;
+    border-radius: 5px;
+    margin: 5px;
+  }
+  .dropdown-menu-done button{
+    border: none;
+    background-color: white;
+  }
+  .button-calendar{
+    border: 2px solid #EFC75E;
+    background-color: #EFC75E;
+    color: white;
+    font-weight: bold;
+    border-radius: 20px;
+    padding:4px;
+    text-decoration-line: none;
+  }
+  .button-calendar:hover{
+    background-color: white;
+    text-decoration-line: none;
+    color:#EFC75E;
+    font-weight: bold;
+  }
+  .btn-primary:active{
+    background-color: white;
+    text-decoration-line: none;
+    color:#EFC75E;
+    font-weight: bold;
+  }
+  .wrapper{
+    margin: 0;
+    padding:0;
+    width: 100%;
+    text-align: center;
+  }
+  .section-intro{
+    text-align: center;
+  }
+  .section-intro h1{
+    font-weight: 500;
+    margin-bottom: 30px;
+    font-family: 'Dancing Script', cursive;
+  }
+  .section-intro p{
+    font-size: 1em;
+    line-height: 1.5;
+    margin: 0 200px;
+    margin-bottom: 30px;
+    font-family: 'Roboto Mono', monospace;
+  }
+  .list-room{
+    padding: 10px;
+    border: 1px solid #EFC75E;
+    text-align: center;
+    border-radius: 10px;
+    margin: 20px 0px;
+    height: 700px;
+  }
+  .list-room--item a{
+    border-radius: 10px;
+  }
+  .list-room--item a img{
+    width: 100%;
+    border-radius: 10px;
+  }
+  .list-room-title{
+    padding: 10px;
+  }
+  .list-room-title a{
+    color: black;
+    text-decoration-line: none;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;    font-weight: 500;
+    padding: 5px;
+  }
+  .list-room-title a:hover{
+    color: #EFC75E;
+    text-decoration-line: none;
+  }
+  .list-room-content {
+    height: 150px;
+    margin: 10px;
+  }
+  .list-room-content p{
+    font-family:'Courier New', Courier, monospace;
+  }
+  .list-room-meta{
+    font-weight: 500;
+    padding-bottom: 10px;
+  }
+  .list-room-action{
+    border-radius: 10px;
+    background-color: #EFC75E;
+    margin: 10px 100px;
+  }
+  .list-room-action a{
+    color: white;
+    font-weight: bold;
+  }
+  .footer{
+    background-color: black;
+    text-align: center;
+  }
+  .widget-main{
+    text-align: left;
+    padding: 10px;
+  }
+  .widget-title{
+    margin: 5px 0;
+    font-size: medium;
+    color: white;
+  }
+  .widget-content{
+    font-size: 1em;
+    font-family:'Times New Roman', Times, serif;
+    color: gray;
+  }
+  .widget-detail ul{
+    padding-left: 0px;
+    list-style: none;
+  }
+  .widget-detail ul li a{
+    color: gray;
+    text-decoration-line: none;
+  }
+  .widget-detail ul li a:hover{
+    font-size: 1em;
+    color: whitesmoke;
+    text-decoration-line: none;
+  }
+  span{
+    color:gray;
+    font-family:'Courier New', Courier, monospace;
+  }
+  .footer-system img{
+    width: 10%;
+    height: 10%;
+  }
+  

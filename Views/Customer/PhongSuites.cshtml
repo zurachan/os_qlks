@@ -1,0 +1,366 @@
+﻿@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewData["Title"] = "Phòng Suites";
+}
+
+@section styles{
+    <link href="~/customer/css/PhongSuites.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap">
+}
+
+<div class="banner">
+    <div class="slideshow-container">
+        <img src="~/customer/images/PhongSuite-banner.png" style="width:100%">
+    </div>
+    <div class="banner-text">
+        <h1>Phòng & Suites</h1>
+    </div>
+    <div class="banner-cover">
+        <div class="banner-calendars">
+            <form method="get">
+                <div class="banner-calendars-item">
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#EFC75E;">
+                            calendar_today
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <input type="date" placeholder="Ngày đặt" class="date">
+                    </div>
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#8e6a0d;">
+                            sync_alt
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#EFC75E;">
+                            calendar_today
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <input type="date" placeholder="Ngày trả" class="date">
+                    </div>
+                    <div class="glyphicon">
+                        <span class="material-symbols-outlined" style="color:#EFC75E;">
+                            person
+                        </span>
+                    </div>
+                    <div class="glyphicon">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle custom-btn" data-bs-toggle="dropdown">
+                                "Adults | Childrens | Room"
+                            </button>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-menu-select">
+                                    <label>Adults</label>
+                                    <input type="number" value="1" name="adult" class="form-control">
+                                </div>
+                                <div class="dropdown-menu-select">
+                                    <label>Children</label>
+                                    <input type="number" value="0" name="children" class="form-control">
+                                </div>
+                                <div class="dropdown-menu-select">
+                                    <label>Rooms</label>
+                                    <input type="number" value="1" name="room" class="form-control">
+                                </div>
+                                <div class="dropdown-menu-done">
+                                    <button type="submit">DONE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glyphicon">
+                        <a asp-controller="Customer" asp-action="ListRoom" class="button-calendar">Tìm phòng</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="section-intro">
+        <h1>Phòng & Suites</h1>
+        <p>Natcy Hotel là sự kết hợp giữa kiến ​​trúc cổ điển và thiết kế hiện đại, với 280 phòng và suite sang trọng có nội thất phong cách và cao cấp. Màu sắc nhẹ nhàng trong mỗi phòng tạo ra bầu không khí thư giãn mang đến cho khách doanh nhân và khách du lịch một nơi ẩn náu thư thái sau một ngày khám phá Thành phố Hồ Chí Minh.</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="list-room">
+                <div class="list-room--item">
+                    <a href="#">
+                        <img alt="" src="~/customer/images/PhongSuites1.jpg">
+                    </a>
+                </div>
+                <div class="list-room-title">
+                    <a href="#">PHÒNG DELUXE</a>
+                </div>
+                <div class="list-room-content">
+                    <p>Phòng Deluxe với không gian ấm cúng, rộng rãi cùng ban công thoáng mát sẽ đưa bạn rời xa sự hối hả của thành phố và mang đến sự thoải mái tuyệt vời cho một kỳ nghỉ thư giãn </p>
+                </div>
+                <div class="list-room-meta"> 2 khách | 28m2 </div>
+                <div class="list-room-icon">
+                    <span class="material-symbols-outlined">
+                        pool
+                    </span>
+                    <span class="material-symbols-outlined">
+                        fitness_center
+                    </span>
+                    <span class="material-symbols-outlined">
+                        spa
+                    </span>
+                    <span class="material-symbols-outlined">
+                        wifi
+                    </span>
+                    <span class="material-symbols-outlined">
+                        restaurant
+                    </span>
+                    <span class="material-symbols-outlined">
+                        local_parking
+                    </span>
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+                    <span class="material-symbols-outlined">
+                        bathtub
+                    </span>
+                </div>
+                <div class="list-room-action">
+                    <a class="btn btn-info-main" asp-controller="Customer" asp-action="ListRoom" target="_blank">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="list-room">
+                <div class="list-room--item">
+                    <a href="#">
+                        <img alt="" src="~/customer/images/PhongSuites2.jpg">
+                    </a>
+                </div>
+                <div class="list-room-title">
+                    <a href="#">PHÒNG DELUXE CORNER</a>
+                </div>
+                <div class="list-room-content">
+                    <p>
+                        Hãy tận hưởng căn phòng ấm cúng với lối trang trí hiện đại và hai ban công thoải mái cùng tầm nhìn tuyệt đẹp toàn cảnh thành phố
+                    </p>
+                </div>
+                <div class="list-room-meta"> 2 khách | 32m2 </div>
+                <div class="list-room-icon">
+                    <span class="material-symbols-outlined">
+                        pool
+                    </span>
+                    <span class="material-symbols-outlined">
+                        fitness_center
+                    </span>
+                    <span class="material-symbols-outlined">
+                        spa
+                    </span>
+                    <span class="material-symbols-outlined">
+                        wifi
+                    </span>
+                    <span class="material-symbols-outlined">
+                        restaurant
+                    </span>
+                    <span class="material-symbols-outlined">
+                        local_parking
+                    </span>
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+                    <span class="material-symbols-outlined">
+                        bathtub
+                    </span>
+                </div>
+                <div class="list-room-action">
+                    <a class="btn btn-info-main" asp-controller="Customer" asp-action="ListRoom" target="_blank">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="list-room">
+                <div class="list-room--item">
+                    <a href="#">
+                        <img alt="" src="~/customer/images/PhongSuites3.jpg">
+                    </a>
+                </div>
+                <div class="list-room-title">
+                    <a href="#">PHÒNG LUXURY DELUXE TWIN</a>
+                </div>
+                <div class="list-room-content">
+                    <p>Một không gian trang nhã cùng nội thất sang trọng và tầm nhìn toàn cảnh bao quát cả thành phố từ trên cao. Hãy tận hưởng những giấc ngủ ngon nhất</p>
+                </div>
+                <div class="list-room-meta"> 2 khách | 60m2 </div>
+                <div class="list-room-icon">
+                    <span class="material-symbols-outlined">
+                        pool
+                    </span>
+                    <span class="material-symbols-outlined">
+                        fitness_center
+                    </span>
+                    <span class="material-symbols-outlined">
+                        spa
+                    </span>
+                    <span class="material-symbols-outlined">
+                        wifi
+                    </span>
+                    <span class="material-symbols-outlined">
+                        restaurant
+                    </span>
+                    <span class="material-symbols-outlined">
+                        local_parking
+                    </span>
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+                    <span class="material-symbols-outlined">
+                        bathtub
+                    </span>
+                </div>
+                <div class="list-room-action">
+                    <a class="btn btn-info-main" asp-controller="Customer" asp-action="ListRoom" target="_blank">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="list-room">
+                <div class="list-room--item">
+                    <a href="#">
+                        <img alt="" src="~/customer/images/PhongSuites3.jpg">
+                    </a>
+                </div>
+                <div class="list-room-title">
+                    <a href="#">PHÒNG LUXURY DELUXE CORNER</a>
+                </div>
+                <div class="list-room-content">
+                    <p>Phòng Luxury Deluxe Corner được trang bị đầy đủ tiện nghi cùng nội thất sang trọng và 2 ban công thoáng mát. Hãy khám phá không gian đầy ấn tượng với cách bày trí</p>
+                </div>
+                <div class="list-room-meta"> 2 khách | 45m2 </div>
+                <div class="list-room-icon">
+                    <span class="material-symbols-outlined">
+                        pool
+                    </span>
+                    <span class="material-symbols-outlined">
+                        fitness_center
+                    </span>
+                    <span class="material-symbols-outlined">
+                        spa
+                    </span>
+                    <span class="material-symbols-outlined">
+                        wifi
+                    </span>
+                    <span class="material-symbols-outlined">
+                        restaurant
+                    </span>
+                    <span class="material-symbols-outlined">
+                        local_parking
+                    </span>
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+                    <span class="material-symbols-outlined">
+                        bathtub
+                    </span>
+                </div>
+                <div class="list-room-action">
+                    <a class="btn btn-info-main" href="ListRoom.html" target="_blank">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="list-room">
+                <div class="list-room--item">
+                    <a href="#">
+                        <img alt="" src="~/customer/images/PhongSuites2.jpg">
+                    </a>
+                </div>
+                <div class="list-room-title">
+                    <a href="#">PHÒNG KẾT NỐI</a>
+                </div>
+                <div class="list-room-content">
+                    <p>Sự kết hợp của 2 phòng với khu vực phòng ngủ lớn cùng ánh sáng tự nhiên từ cửa sổ kính trong một không gian đẹp tuyệt vời- một lựa chọn lý tưởng cho gia đình</p>
+                </div>
+                <div class="list-room-meta"> 4 khách | 56m2 / 2 phòng</div>
+                <div class="list-room-icon">
+                    <span class="material-symbols-outlined">
+                        pool
+                    </span>
+                    <span class="material-symbols-outlined">
+                        fitness_center
+                    </span>
+                    <span class="material-symbols-outlined">
+                        spa
+                    </span>
+                    <span class="material-symbols-outlined">
+                        wifi
+                    </span>
+                    <span class="material-symbols-outlined">
+                        restaurant
+                    </span>
+                    <span class="material-symbols-outlined">
+                        local_parking
+                    </span>
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+                    <span class="material-symbols-outlined">
+                        bathtub
+                    </span>
+                </div>
+                <div class="list-room-action">
+                    <a class="btn btn-info-main" asp-controller="Customer" asp-action="ListRoom" target="_blank">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="list-room">
+                <div class="list-room--item">
+                    <a href="#">
+                        <img alt="" src="~/customer/images/PhongSuites1.jpg">
+                    </a>
+                </div>
+                <div class="list-room-title">
+                    <a href="#">PHÒNG TỔNG THỐNG</a>
+                </div>
+                <div class="list-room-content">
+                    <p>Một trải nghiệm riêng tư tuyệt đối với thiết kế độc đáo đầy lôi cuốn. Rộng rãi, thiết thực và đầy đủ các tiên nghị để bạn cảm thấy thư giãn như đang ở nhà</p>
+                </div>
+                <div class="list-room-meta"> 2 khách | 120m2 </div>
+                <div class="list-room-icon">
+                    <span class="material-symbols-outlined">
+                        pool
+                    </span>
+                    <span class="material-symbols-outlined">
+                        fitness_center
+                    </span>
+                    <span class="material-symbols-outlined">
+                        spa
+                    </span>
+                    <span class="material-symbols-outlined">
+                        wifi
+                    </span>
+                    <span class="material-symbols-outlined">
+                        restaurant
+                    </span>
+                    <span class="material-symbols-outlined">
+                        local_parking
+                    </span>
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+                    <span class="material-symbols-outlined">
+                        bathtub
+                    </span>
+                </div>
+                <div class="list-room-action">
+                    <a class="btn btn-info-main" asp-controller="Customer" asp-action="ListRoom" target="_blank">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

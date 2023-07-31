@@ -1,5 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Nhân viên";
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    ViewData["Title"] = "Dịch vụ";
 }
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -29,3 +30,13 @@
     </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
+<script type="text/javascript">
+    let navlink = document.querySelectorAll(".nav-link");
+    navlink.forEach(i => {
+        if (i.href.includes("@controller")) {
+            i.classList.add("active");
+        } else {
+            i.classList.remove("active")
+        }
+    })
+</script>

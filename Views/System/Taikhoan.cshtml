@@ -1,18 +1,19 @@
 ﻿@{
     var controller = ViewContext.RouteData.Values["controller"].ToString();
-    ViewData["Title"] = "Nhân viên";
+    var action = ViewContext.RouteData.Values["action"].ToString();
+    ViewData["Title"] = "Tài khoản";
 }
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Quản lý nhân viên</h1>
+                <h1 class="m-0">Quản lý tài chính</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item active">Quản lý nhân viên</li>
+                    <li class="breadcrumb-item active">Quản lý tài chính</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -24,18 +25,16 @@
     <div class="container-fluid">
         <!-- Main row -->
         <div class="row">
-            Nhân viên list view
+            Tài khoản list view
         </div>
         <!-- /.row (main row) -->
     </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
-
-
 <script type="text/javascript">
     let navlink = document.querySelectorAll(".nav-link");
     navlink.forEach(i => {
-        if (i.href.includes("@controller")) {
+        if (i.href.includes("@controller") && i.href.includes("@action")) {
             i.classList.add("active");
         } else {
             i.classList.remove("active")

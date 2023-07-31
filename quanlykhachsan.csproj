@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\adminlte\" />
+    <None Include="wwwroot\Template\tpl_chucvu.html" />
   </ItemGroup>
 
   <ItemGroup>

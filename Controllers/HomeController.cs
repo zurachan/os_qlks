@@ -21,13 +21,6 @@ namespace quanlykhachsan.Controllers
             return View();
         }
 
-        public IActionResult Chucvu()
-        {
-            var chucvus = _chucvuService.GetAll();
-
-            return View();
-        }
-
         public IActionResult Privacy()
         {
             return View();

@@ -1,9 +1,10 @@
-﻿<script type="text/html" id="tpl-quyen-table">
+﻿<script type="text/html" id="tpl-dichvu-table">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>Tên quyền</th>
+                <th>Tên dịch vụ</th>
+                <th>Giá dịch vụ</th>
             </tr>
         </thead>
         <tbody>
@@ -11,7 +12,8 @@
             <tr data-row-id="{{id}}">
                 <td class="cvid" style="display:none">{{id}}</td>
                 <td>{{serialNumber}}</td>
-                <td class="cvname">{{tenQuyen}}</td>
+                <td class="cvname">{{tenDV}}</td>
+                <td class="cvname">{{giaDV}}</td>
                 <td width="100px">
                     <button id="edit_{{id}}" class="btnEdit btn btn-info btn-sm" title="Chỉnh sửa chức vụ">
                         <i class="fas fa-edit"></i>

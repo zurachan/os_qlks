@@ -24,13 +24,71 @@
     <div class="container-fluid">
         <!-- Main row -->
         <div class="row">
-            Dịch vụ list view
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Dịch vụ</h3>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <div class="input-group-append">
+                                    <button type="button" class="btnAdd btn btn-primary">
+                                        <i class="fas fa-plus"></i>
+                                        Thêm dịch vụ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" id="dichvu-table">
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
         </div>
         <!-- /.row (main row) -->
     </div><!-- /.container-fluid -->
 </section>
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm mới dịch vụ</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="tencv">Tên dịch vụ</label>
+                            <input type="hidden" id="id" name="id">
+                            <input type="text" name="tenDV" class="form-control" id="tenDV" placeholder="Nhập tên dịch vụ">
+                        </div>
+                        <div class="form-group">
+                            <label for="tencv">Giá dịch vụ</label>
+                            <input type="text" name="giaDV" class="form-control" id="giaDV" placeholder="Nhập giá dịch vụ">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btnClose btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btnSaveAdd btn btn-primary">Lưu và đóng</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 <!-- /.content -->
 <script type="text/javascript">
+    var template = "/Template/tpl_dichvu.html"
+    //set active side menu
     let navlink = document.querySelectorAll(".nav-link");
     navlink.forEach(i => {
         if (i.href.includes("@controller")) {
@@ -39,4 +97,126 @@
             i.classList.remove("active")
         }
     })
+    //
+
+    //Call server get data
+    $(document).ready(function () {
+        GetAllDichvu();
+        $(".btnAdd").on("click", function () {
+            $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+            $('.modal-title').html("");
+            $('.modal-title').html("Thêm mới dịch vụ");
+
+        });
+
+        $(".btnClose").on("click", function () {
+            $('#modalForm').find('input').val("");
+        });
+
+        $(".btnSaveAdd").on("click", function () {
+            let form = $('#modalForm').serializeArray();
+            let model = uiUtils.objectifyForm(form);
+            if (model.id) {
+                if (model.tenDV) {
+                    $.ajax(
+                        {
+                            type: "PUT",
+                            data: model,
+                            url: "@Url.Action("SuaDichvu", "Dichvu")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                GetAllDichvu();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                GetAllDichvu();
+                            }
+                        });
+                } else {
+                    alert("Nhập tên dịch vụ")
+                }
+            } else {
+                if (model.tenDV) {
+                    $.ajax(
+                        {
+                            type: "POST",
+                            data: model,
+                            url: "@Url.Action("LuuDichvu", "Dichvu")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                GetAllDichvu();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                GetAllDichvu();
+                            }
+                        });
+                } else {
+                    alert("Nhập tên dịch vụ")
+                }
+            }
+        });
+    });
+
+    function GetAllDichvu() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetAllDichvu", "Dichvu")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.serialNumber = index + 1;
+                    })
+
+                    $.Mustache.load(template + '?v=' + Math.random()).done(function () {
+                        $('#dichvu-table').html('');
+                        $('#dichvu-table').mustache('tpl-dichvu-table', res);
+
+                        //Khai bao event cho button
+                        $(".btnEdit").on("click", function () {
+                            let id = this.id.split('_')[1];
+                            $.ajax({
+                                type: "GET",
+                                data: { id: id },
+                                async: false,
+                                url: "@Url.Action("GetByIdDichvu", "Dichvu")",
+                                success: function (data) {
+                                    $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                    $('.modal-title').html("");
+                                    $('.modal-title').html("Chỉnh sửa dịch vụ");
+                                    console.log(data.data);
+                                    $.each(data.data, function (key, value) {
+                                        $('#modalForm').find("input[name='" + key + "']").val(value);
+                                    });
+                                },
+                                error: function () {
+
+                                }
+                            });
+                        });
+
+                        $(".btnDelete").on("click", function () {
+                            let id = this.id.split('_')[1];
+                            $.ajax(
+                                {
+                                    type: "DELETE",
+                                    data: { id: id },
+                                    url: "@Url.Action("XoaDichvu", "Dichvu")",
+                                    success: function (data) {
+                                        GetAllDichvu();
+                                    },
+                                    error: function () {
+                                        GetAllDichvu();
+                                    }
+                                });
+                        });
+
+                    });
+                }
+            },
+            error: function () { }
+        });
+    }
 </script>

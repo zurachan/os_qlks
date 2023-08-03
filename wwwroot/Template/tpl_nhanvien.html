@@ -1,17 +1,30 @@
-﻿<script type="text/html" id="tpl-quyen-table">
+﻿<script type="text/html" id="tpl-nhanvien-table">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>Tên quyền</th>
+                <th>Họ và tên</th>
+                <th>Ngày sinh</th>
+                <th>Địa chỉ</th>
+                <th>Giới tính</th>
+                <th>Chức vụ</th>
+                <th>CCCD</th>
+                <th>Ngày vào làm</th>
+                <th>SDT</th>
             </tr>
         </thead>
         <tbody>
             {{#data}}
             <tr data-row-id="{{id}}">
-                <td class="cvid" style="display:none">{{id}}</td>
                 <td>{{serialNumber}}</td>
-                <td class="cvname">{{tenQuyen}}</td>
+                <td class="hoTen">{{hoTen}}</td>
+                <td class="ngaySinh">{{ngaySinh}}</td>
+                <td class="diaChi">{{diaChi}}</td>
+                <td class="gioiTinh">{{gioiTinhText}}</td>
+                <td class="maCV">{{chucVu}}</td>
+                <td class="cccd">{{cccd}}</td>
+                <td class="ngayVaoLam">{{ngayVaoLam}}</td>
+                <td class="sdt">{{sdt}}</td>
                 <td width="100px">
                     <button id="edit_{{id}}" class="btnEdit btn btn-info btn-sm" title="Chỉnh sửa chức vụ">
                         <i class="fas fa-edit"></i>

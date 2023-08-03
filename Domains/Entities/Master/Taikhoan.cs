@@ -13,8 +13,10 @@ namespace quanlykhachsan.Domains.Entities.Master
         [Column("tendangnhap")]
         public string TenDangNhap { get; set; }
         [Column("matkhau")]
-        public string MatKhau { get; set; }
+        public string MatKhau { get; set; } = "123456";
         [Column("manv")]
         public int MaNV { get; set; }
+        [Column("maquyen")]
+        public int MaQuyen { get; set; }
     }
 }

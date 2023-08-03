@@ -1,38 +1,114 @@
 ﻿@{
     var controller = ViewContext.RouteData.Values["controller"].ToString();
     ViewData["Title"] = "Phòng";
+    var canAdd = (bool)ViewBag.CanAdd;
 }
 <!-- Content Header (Page header) -->
-<div class="content-header">
+<section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Quản lý phòng</h1>
-            </div><!-- /.col -->
+                <h1>
+                    Quản trị phòng và đặt phòng
+                </h1>
+            </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item active">Quản lý phòng</li>
+                    <li class="breadcrumb-item active">Quản trị phòng</li>
                 </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
+            </div>
+        </div>
     </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
+</section>
+
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <!-- Main row -->
-        <div class="row">
-            Phòng list view
+        <!-- /.card -->
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="tabLoaiPhong" data-toggle="pill"
+                                data-target="#tabLoaiPhongContent" role="tab" aria-controls="tabLoaiPhongContent"
+                                aria-selected="true">
+                            Loại phòng
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="tabPhong" data-toggle="pill"
+                                data-target="#tabPhongContent" role="tab" aria-controls="tabPhongContent"
+                                aria-selected="false">
+                            Phòng
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="tabLichDatPhong" data-toggle="pill"
+                                data-target="#tabLichDatPhongContent" role="tab" aria-controls="tabLichDatPhongContent"
+                                aria-selected="false">
+                            Lịch đặt phòng
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="tabLoaiPhongContent" role="tabpanel"
+                         aria-labelledby="tabLoaiPhong">
+                    </div>
+                    <div class="tab-pane fade" id="tabPhongContent" role="tabpanel"
+                         aria-labelledby="tabPhong">
+                    </div>
+                    <div class="tab-pane fade" id="tabLichDatPhongContent" role="tabpanel"
+                         aria-labelledby="tabLichDatPhong">
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
         </div>
-        <!-- /.row (main row) -->
-    </div><!-- /.container-fluid -->
+        <!-- /.card -->
+    </div>
+    <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
 
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm khách hàng</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm">
+                </form>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btnClose btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btnSaveAdd btn btn-primary">Lưu và đóng</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <script type="text/javascript">
-    let navlink = document.querySelectorAll(".nav-link");
+    var templateLoaiPhong = "/Template/tpl_loaiphong.html"
+    var templateLoaiPhongPopup = "/Template/tpl_loaiphong_popup.html"
+    var templatePhong = "/Template/tpl_phong.html"
+    var templatePhongPopup = "/Template/tpl_phong_popup.html"
+    var templatePhieuDatPhong = "/Template/tpl_phieudatphong.html"
+    var templatePhieuDatPhongPopup = "/Template/tpl_phieudatphong_popup.html"
+    var canAdd = @canAdd.ToString().ToLower();
+    var loaiphongs = [];
+    var phongs = [];
+    var khachhangs = [];
+
+
+    let navlink = document.querySelectorAll(".side-nav-item");
     navlink.forEach(i => {
         if (i.href.includes("@controller")) {
             i.classList.add("active");
@@ -40,4 +116,472 @@
             i.classList.remove("active")
         }
     })
+
+    $(function () {
+        GetAllLoaiphong();
+        $('#tabLoaiPhong').on('click', function () {
+            $('#tabLoaiPhongContent').html('');
+            GetAllLoaiphong();
+        })
+        $('#tabPhong').on('click', function () {
+            $('#tabPhongContent').html('');
+            GetAllPhong();
+        })
+        $('#tabLichDatPhong').on('click', function () {
+            $('#tabLichDatPhongContent').html('');
+            GetAllKhachhang();
+            GetAllPhongData();
+            GetAllPhieudatphong();
+        })
+
+        $(".btnClose").on("click", function () {
+            $('#modalForm').find('input').val("");
+            $('#modalForm').find('select').html("");
+        });
+
+        $('.btnSaveAdd').on('click', function () {
+            let form = $('#modalForm').serializeArray();
+            let model = uiUtils.objectifyForm(form);
+            var countProp = Object.keys(model);
+            switch (countProp.length) {
+                case 3://Loaiphong object
+                    if (model.id) {
+                        $.ajax({
+                            type: "PUT",
+                            data: model,
+                            async: false,
+                            url: "@Url.Action("SuaLoaiphong", "Phong")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllLoaiphong();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllLoaiphong();
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            data: model,
+                            async: false,
+                            url: "@Url.Action("LuuLoaiphong", "Phong")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllLoaiphong();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllLoaiphong();
+                            }
+                        });
+                    }
+                    break;
+                case 5://Phong object
+                    if (model.id) {
+                        $.ajax({
+                            type: "PUT",
+                            data: model,
+                            async: false,
+                            url: "@Url.Action("Suaphong", "Phong")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhong();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhong();
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            data: model,
+                            async: false,
+                            url: "@Url.Action("Luuphong", "Phong")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhong();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhong();
+                            }
+                        });
+                    }
+                    break;
+                case 6://Phieudatphong object
+                    if (model.id) {
+                        $.ajax({
+                            type: "PUT",
+                            data: model,
+                            async: false,
+                            url: "@Url.Action("SuaPhieudatphong", "Phieudatphong")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhieudatphong();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhieudatphong();
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            data: model,
+                            async: false,
+                            url: "@Url.Action("LuuPhieudatphong", "Phieudatphong")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhieudatphong();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                $('#modalForm').find('select').html("");
+                                GetAllPhieudatphong();
+                            }
+                        });
+                    }
+                    break;
+            }
+        })
+    })
+
+    function GetAllLoaiphong() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllLoaiphong", "Phong")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.serialNumber = index + 1;
+                    })
+                    loaiphongs = res.data;
+                    $.Mustache.load(templateLoaiPhong + '?v=' + Math.random()).done(function () {
+                        $('#tabLoaiPhongContent').html('');
+                        $('#tabLoaiPhongContent').mustache('tpl-loaiphong-table', res);
+                        $(".btnAdd").parent().hide();
+                        $(".btnEdit").parent().hide();
+                        $(".btnDelete").parent().hide();
+                        if (canAdd) {
+                            $(".btnAdd").parent().show();
+                            $(".btnEdit").parent().show();
+                            $(".btnDelete").parent().show();
+
+                            $(".btnAdd").on('click', function () {
+                                $.Mustache.load(templateLoaiPhongPopup + '?v=' + Math.random()).done(function () {
+                                    $('#modalForm').html('');
+                                    $('#modalForm').mustache('tpl-loaiphong-popup');
+
+                                    $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                    $('.modal-title').html("");
+                                    $('.modal-title').html("Thêm loại phòng");
+                                })
+                            })
+
+                            $(".btnEdit").on("click", function () {
+                                let id = this.id.split('_')[1];
+                                $.ajax({
+                                    type: "GET",
+                                    data: { id: id },
+                                    async: false,
+                                    url: "@Url.Action("GetByIdLoaiphong", "Phong")",
+                                    success: function (data) {
+                                        $.Mustache.load(templateLoaiPhongPopup + '?v=' + Math.random()).done(function () {
+                                            $('#modalForm').html('');
+                                            $('#modalForm').mustache('tpl-loaiphong-popup');
+
+                                            $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                            $('.modal-title').html("");
+                                            $('.modal-title').html("Chỉnh sửa loại phòng");
+                                            $.each(data.data, function (key, value) {
+                                                $('#modalForm').find("input[name='" + key + "']").val(value);
+                                            });
+                                        })
+                                    },
+                                    error: function () {
+
+                                    }
+                                });
+                            });
+
+                            $(".btnDelete").on("click", function () {
+                                let id = this.id.split('_')[1];
+                                $.ajax(
+                                    {
+                                        type: "DELETE",
+                                        data: { id: id },
+                                        async: false,
+                                        url: "@Url.Action("XoaLoaiphong", "Phong")",
+                                        success: function (data) {
+                                            GetAllLoaiphong();
+                                        },
+                                        error: function () {
+                                            GetAllLoaiphong();
+                                        }
+                                    });
+                            });
+
+                        }
+                    });
+                }
+            },
+            error: function () { }
+        });
+    }
+
+    function GetAllPhong() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllPhong", "Phong")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.serialNumber = index + 1;
+                        x.loaiPhong = loaiphongs.find(c => c.id == x.maLP).tenLP;
+                    })
+                    phongs = res.data;
+                    $.Mustache.load(templatePhong + '?v=' + Math.random()).done(function () {
+                        $('#tabPhongContent').html('');
+                        $('#tabPhongContent').mustache('tpl-phong-table', res);
+
+                        $(".btnAdd").parent().hide();
+                        $(".btnEdit").parent().hide();
+                        $(".btnDelete").parent().hide();
+                        //Khai bao event cho button
+                        if (canAdd) {
+                            $(".btnAdd").parent().show();
+                            $(".btnEdit").parent().show();
+                            $(".btnDelete").parent().show();
+
+                            $(".btnAdd").on('click', function () {
+                                $.Mustache.load(templatePhongPopup + '?v=' + Math.random()).done(function () {
+                                    $('#modalForm').html('');
+                                    $('#modalForm').mustache('tpl-phong-popup');
+                                    $("#maLP").append($("<option disabled selected>--Chọn--</option>"));
+                                    loaiphongs.forEach(i => {
+                                        $("#maLP").append($("<option></option>").val(i.id).html(i.tenLP));
+                                    })
+                                    $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                    $('.modal-title').html("");
+                                    $('.modal-title').html("Thêm phòng");
+                                })
+                            })
+
+                            $(".btnEdit").on("click", function () {
+                                let id = this.id.split('_')[1];
+                                $.ajax({
+                                    type: "GET",
+                                    data: { id: id },
+                                    async: false,
+                                    url: "@Url.Action("GetByIdPhong", "Phong")",
+                                    success: function (data) {
+                                        $.Mustache.load(templatePhongPopup + '?v=' + Math.random()).done(function () {
+                                            $('#modalForm').html('');
+                                            $('#modalForm').mustache('tpl-phong-popup');
+
+                                            $("#maLP").append($("<option disabled selected>--Chọn--</option>"));
+                                            loaiphongs.forEach(i => {
+                                                $("#maLP").append($("<option></option>").val(i.id).html(i.tenLP));
+                                            })
+
+                                            $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                            $('.modal-title').html("");
+                                            $('.modal-title').html("Chỉnh sửa phòng");
+                                            $.each(data.data, function (key, value) {
+                                                $('#modalForm').find("input[name='" + key + "']").val(value);
+                                                $('#modalForm').find("select[name='" + key + "']").val(value);
+                                            });
+                                        })
+                                    },
+                                    error: function () {
+
+                                    }
+                                });
+                            });
+
+                            $(".btnDelete").on("click", function () {
+                                let id = this.id.split('_')[1];
+                                $.ajax({
+                                    type: "DELETE",
+                                    async: false,
+                                    data: { id: id },
+                                    url: "@Url.Action("XoaPhong", "Phong")",
+                                    success: function (data) {
+                                        GetAllPhong();
+                                    },
+                                    error: function () {
+                                        GetAllPhong();
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+            },
+            error: function () { }
+        });
+    }
+
+    function GetAllPhieudatphong() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllPhieudatphong", "Phieudatphong")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.serialNumber = index + 1;
+                        x.khachHang = khachhangs.find(c => c.id == x.maKH).hoTen;
+                        x.ngayNhanPhong = moment(x.ngayNhanPhong).format('DD/MM/YYYY')
+                        x.ngayTraPhong = moment(x.ngayTraPhong).format('DD/MM/YYYY')
+                        let phong = phongs.find(c => c.id == x.maPhong);
+                        x.phong = "Phòng " + phong.loaiPhong + ", tầng " + phong.tang + ", sức chứa " + phong.sucChua + " người";
+                    })
+
+                    $.Mustache.load(templatePhieuDatPhong + '?v=' + Math.random()).done(function () {
+                        $('#tabLichDatPhongContent').html('');
+                        $('#tabLichDatPhongContent').mustache('tpl-phieudatphong-table', res);
+
+                        //Khai bao event cho button
+                        $(".btnAdd").on('click', function () {
+                            $.Mustache.load(templatePhieuDatPhongPopup + '?v=' + Math.random()).done(function () {
+                                $('#modalForm').html('');
+                                $('#modalForm').mustache('tpl-phieudatphong-popup');
+
+                                $("#maKH").append($("<option disabled selected>--Chọn--</option>"));
+                                khachhangs.forEach(i => {
+                                    $("#maKH").append($("<option></option>").val(i.id).html(i.hoTen));
+                                })
+
+                                $("#maPhong").append($("<option disabled selected>--Chọn--</option>"));
+                                phongs.forEach(i => {
+                                    $("#maPhong").append($("<option></option>").val(i.id).html("Phòng " + i.loaiPhong + ", tầng " + i.tang + ", sức chứa " + i.sucChua + " người"));
+                                })
+                                $("#ngayNhanPhong").datepicker({ dateFormat: 'dd/mm/yy' });
+                                $("#ngayTraPhong").datepicker({ dateFormat: 'dd/mm/yy' });
+
+                                $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                $('.modal-title').html("");
+                                $('.modal-title').html("Tạo phiếu đặt phòng");
+                            })
+                        })
+
+                        $(".btnEdit").on("click", function () {
+                            let id = this.id.split('_')[1];
+                            $.ajax({
+                                type: "GET",
+                                data: { id: id },
+                                async: false,
+                                url: "@Url.Action("GetByIdPhieudatphong", "Phieudatphong")",
+                                success: function (data) {
+                                    $.Mustache.load(templatePhieuDatPhongPopup + '?v=' + Math.random()).done(function () {
+                                        $('#modalForm').html('');
+                                        $('#modalForm').mustache('tpl-phieudatphong-popup');
+                                        $("#maKH").append($("<option disabled selected>--Chọn--</option>"));
+                                        khachhangs.forEach(i => {
+                                            $("#maKH").append($("<option></option>").val(i.id).html(i.hoTen));
+                                        })
+
+                                        $("#maPhong").append($("<option disabled selected>--Chọn--</option>"));
+                                        phongs.forEach(i => {
+                                            $("#maPhong").append($("<option></option>").val(i.id).html("Phòng " + i.loaiPhong + ", tầng " + i.tang + ", sức chứa " + i.sucChua + " người"));
+                                        })
+                                        data.data.ngayNhanPhong = moment(data.data.ngayNhanPhong).format('DD/MM/YYYY')
+                                        data.data.ngayTraPhong = moment(data.data.ngayVaoLam).format('DD/MM/YYYY')
+
+                                        $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                        $('.modal-title').html("");
+                                        $('.modal-title').html("Chỉnh sửa phiếu đặt phòng");
+                                        $.each(data.data, function (key, value) {
+                                            $('#modalForm').find("input[name='" + key + "']").val(value);
+                                            $('#modalForm').find("select[name='" + key + "']").val(value);
+                                        });
+                                    })
+                                },
+                                error: function () {
+
+                                }
+                            });
+                        });
+
+                        $(".btnDelete").on("click", function () {
+                            let id = this.id.split('_')[1];
+                            $.ajax(
+                                {
+                                    type: "DELETE",
+                                    data: { id: id },
+                                    async: false,
+                                    url: "@Url.Action("XoaPhieudatphong", "Phieudatphong")",
+                                    success: function (data) {
+                                        GetAllPhieudatphong();
+                                    },
+                                    error: function () {
+                                        GetAllPhieudatphong();
+                                    }
+                                });
+                        });
+
+                    });
+                }
+            },
+            error: function () { }
+        });
+    }
+
+    function GetAllKhachhang() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllKhachhang", "Khachhang")",
+            success: function (data) {
+                khachhangs = [];
+                khachhangs = data.data
+            },
+            error: function () {
+                khachhangs = [];
+            }
+        });
+    }
+
+    function GetAllPhongData() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllPhong", "Phong")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.serialNumber = index + 1;
+                        x.loaiPhong = loaiphongs.find(c => c.id == x.maLP).tenLP;
+                    })
+                    phongs = res.data;
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
+
 </script>

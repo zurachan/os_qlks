@@ -15,3 +15,5 @@
 /.vs
 /obj
 /bin
+/obj/Debug/net6.0/quanlykhachsan.csproj.AssemblyReference.cache
+/obj/Debug/net6.0/quanlykhachsan.GeneratedMSBuildEditorConfig.editorconfig

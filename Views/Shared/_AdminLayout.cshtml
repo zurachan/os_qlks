@@ -1,6 +1,14 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+@{
+    var Nhanvien = Accessor.HttpContext.Session.GetString("NhanVien");
+    var TaiKhoan = Accessor.HttpContext.Session.GetString("TaiKhoan");
+    var Quyen = Accessor.HttpContext.Session.GetString("Quyen");
+    var ChucVu = Accessor.HttpContext.Session.GetString("ChucVu");
+}
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,14 +22,23 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
     <!-- jQuery -->
-    @*<script src="~/adminlte/plugins/jquery/jquery.min.js"></script>*@
-    <script src="~/adminlte/plugins/jquery.min.js"></script>
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
 
-    @*    <script src="~/adminlte/plugins/jquery/jquery-confirm.min.js"></script>
-    <link rel="stylesheet" href="~/adminlte/plugins/jquery/jquery-confirm.min.css/">*@
     <!-- jQuery UI 1.11.4 -->
+    <link rel="stylesheet" href="~/adminlte/plugins/jquery-ui/jquery-ui.min.css" />
     <script src="~/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
-
+    <script type="text/javascript" src="~/adminlte/dist/js/ui.common.js"></script>
+    <script type="text/javascript" src="~/adminlte/plugins/select2/select2.min.js"></script>
+    <link rel="stylesheet" href="~/adminlte/plugins/select2/select2.css" />
+    <script type="text/javascript" src="~/adminlte/plugins/moment/moment.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script type='text/javascript' src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.js"></script>
+    <!-- mustache -->
+    <script type='text/javascript' src='~/adminlte/plugins/jquery-mustache/mustache.min.js'></script>
+    <script type='text/javascript' src="~/adminlte/plugins/jquery-mustache/jquery.mustache.min.js"></script>
+    <script type='text/javascript' src="~/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
@@ -42,10 +59,30 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fas fa-user-circle"></i>
                     </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <div class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        @Nhanvien
+                                        <span class="float-right text-sm">@TaiKhoan</span>
+                                    </h3>
+                                    <p class="text-sm">@ChucVu</p>
+                                    <p class="text-sm text-muted">@Quyen</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a asp-controller="Home" asp-action="Logout" class="dropdown-item dropdown-footer">
+                            Log out
+                        </a>
+                    </div>
                 </li>
             </ul>
         </nav>
@@ -68,68 +105,144 @@
                            with font-awesome or any other icon font library -->
 
                         <li class="nav-header">Management</li>
-                        <li class="nav-item">
-                            <a asp-controller="Nhanvien" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Quản lý nhân viên
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Phong" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-warehouse"></i>
-                                <p>
-                                    Quản lý phòng
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Taichinh" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-money-check"></i>
-                                <p>
-                                    Quản lý tài chính
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Dichvu" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-server"></i>
-                                <p>
-                                    Quản lý dịch vụ
-                                </p>
-                            </a>
-                        </li>
+                        @if (ChucVu == "Nhân sự")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Nhanvien" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Quản lý nhân viên
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Dichvu" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-server"></i>
+                                    <p>
+                                        Quản lý dịch vụ
+                                    </p>
+                                </a>
+                            </li>
+                        }
 
-                        <li class="nav-item">
-                            <a asp-controller="System" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>
-                                    Quản trị hệ thống
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a asp-controller="System" asp-action="Phanquyen" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Phân quyền</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="System" asp-action="Chucvu" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Chức vụ</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="System" asp-action="Taikhoan" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Tài khoản</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (ChucVu == "Lễ tân")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Phong" asp-action="Index" class="nav-link side-nav-item">
+                                    <i class="nav-icon fas fa-warehouse"></i>
+                                    <p>
+                                        Quản lý phòng
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Khachhang" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-warehouse"></i>
+                                    <p>
+                                        Quản lý khách hàng
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (ChucVu == "Kế toán")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Taichinh" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-money-check"></i>
+                                    <p>
+                                        Quản lý tài chính
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (ChucVu == "Dịch vụ")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Dichvu" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-server"></i>
+                                    <p>
+                                        Quản lý dịch vụ
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (ChucVu == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Nhanvien" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Quản lý nhân viên
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Phong" asp-action="Index" class="nav-link side-nav-item">
+                                    <i class="nav-icon fas fa-warehouse"></i>
+                                    <p>
+                                        Quản lý phòng
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Khachhang" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-warehouse"></i>
+                                    <p>
+                                        Quản lý khách hàng
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Taichinh" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-money-check"></i>
+                                    <p>
+                                        Quản lý tài chính
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Dichvu" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-server"></i>
+                                    <p>
+                                        Quản lý dịch vụ
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="System" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        Quản trị hệ thống
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-controller="System" asp-action="Quyen" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quyền</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="System" asp-action="Chucvu" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Chức vụ</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="System" asp-action="Taikhoan" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Tài khoản</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -151,14 +264,6 @@
         </footer>
     </div>
     <!-- ./wrapper -->
-    <!-- Bootstrap 4 -->
-    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/adminlte/dist/js/adminlte.js"></script>
-    <!-- mustache -->
-    <script type='text/javascript' src='~/adminlte/plugins/jquery-mustache/mustache.min.js'></script>
-    <script type='text/javascript' src="~/adminlte/plugins/jquery-mustache/jquery.mustache.min.js"></script>
-    <script type='text/javascript' src="~/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

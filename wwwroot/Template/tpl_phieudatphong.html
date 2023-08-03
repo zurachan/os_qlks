@@ -1,9 +1,18 @@
-﻿<script type="text/html" id="tpl-quyen-table">
+﻿<script type="text/html" id="tpl-phieudatphong-table">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>Tên quyền</th>
+                <th>Khách hàng</th>
+                <th>Mã phòng</th>
+                <th>Ngày nhận phòng</th>
+                <th>Ngày trả phòng</th>
+                <th>Tổng tiền</th>
+                <th style="display: flex;justify-content: center;">
+                    <button class="btnAdd btn btn-primary btn-sm" title="Thêm phòng">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -11,7 +20,11 @@
             <tr data-row-id="{{id}}">
                 <td class="cvid" style="display:none">{{id}}</td>
                 <td>{{serialNumber}}</td>
-                <td class="cvname">{{tenQuyen}}</td>
+                <td class="maKH">{{khachHang}}</td>
+                <td class="maPhong">{{phong}}</td>
+                <td class="ngayNhanPhong">{{ngayNhanPhong}}</td>
+                <td class="ngayTraPhong">{{ngayTraPhong}}</td>
+                <td class="tongTien">{{tongTien}}</td>
                 <td width="100px">
                     <button id="edit_{{id}}" class="btnEdit btn btn-info btn-sm" title="Chỉnh sửa chức vụ">
                         <i class="fas fa-edit"></i>

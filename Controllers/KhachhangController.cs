@@ -6,35 +6,40 @@ using quanlykhachsan.Services;
 namespace quanlykhachsan.Controllers
 {
     [Authorize]
-    public class DichvuController : Controller
+    public class KhachhangController : Controller
     {
-        private readonly IDichvuService _dichvuService;
-        public DichvuController(IDichvuService dichvuService)
+        private readonly IKhachhangService _khachhangService;
+        public KhachhangController(IKhachhangService khachhangService)
         {
-            _dichvuService = dichvuService;
+            _khachhangService = khachhangService;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
+            var chucVu = HttpContext.Session.GetString("ChucVu");
+            if (chucVu != "Lễ tân" && chucVu != "Admin")
+                return RedirectToAction("Error", "Home");
             return View();
         }
-        [HttpGet]
-        public JsonResult GetAllDichvu()
+
+        public JsonResult GetAllKhachhang()
         {
-            var res = _dichvuService.GetAllDichvu();
+            var res = _khachhangService.GetAll();
             return Json(new { Success = true, data = res });
         }
         [HttpGet]
-        public JsonResult GetByIdDichvu(int id)
+        public JsonResult GetByIdKhachhang(int id)
         {
-            var res = _dichvuService.GetByIdDichvu(id);
+            var res = _khachhangService.GetById(id);
             return Json(new { Success = true, data = res });
         }
         [HttpPost]
-        public JsonResult LuuDichvu(Dichvu model)
+        public JsonResult LuuKhachhang(Khachhang model)
         {
             try
             {
-                _dichvuService.CreateDichvu(model);
+                _khachhangService.Create(model);
                 return Json(new { Success = true });
             }
             catch
@@ -43,11 +48,11 @@ namespace quanlykhachsan.Controllers
             }
         }
         [HttpPut]
-        public JsonResult SuaDichvu(Dichvu model)
+        public JsonResult SuaKhachhang(Khachhang model)
         {
             try
             {
-                _dichvuService.UpdateDichvu(model);
+                _khachhangService.Update(model);
                 return Json(new { Success = true });
             }
             catch
@@ -56,11 +61,11 @@ namespace quanlykhachsan.Controllers
             }
         }
         [HttpDelete]
-        public bool XoaDichvu(int id)
+        public bool XoaKhachhang(int id)
         {
             try
             {
-                _dichvuService.DeleteDichvu(id);
+                _khachhangService.Delete(id);
                 return true;
             }
             catch

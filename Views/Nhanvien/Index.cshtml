@@ -24,15 +24,114 @@
     <div class="container-fluid">
         <!-- Main row -->
         <div class="row">
-            Nhân viên list view
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Danh sách nhân viên</h3>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <div class="input-group-append">
+                                    <button type="button" class="btnAdd btn btn-primary">
+                                        <i class="fas fa-plus"></i>
+                                        Thêm nhân viên
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" id="nhanvien-table">
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
         </div>
         <!-- /.row (main row) -->
     </div><!-- /.container-fluid -->
 </section>
-<!-- /.content -->
 
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm nhân viên</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">Họ và tên</label>
+                                    <input type="hidden" id="id" name="id">
+                                    <input type="text" name="hoTen" class="form-control" id="hoTen" placeholder="Nhập họ tên">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">Ngày sinh</label>
+                                    <input type="text" name="ngaySinh" class="form-control" id="ngaySinh" placeholder="Chọn ngày sinh">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">Địa chỉ</label>
+                                    <input type="text" name="diaChi" class="form-control" id="diaChi" placeholder="Nhập địa chỉ">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">Giới tính</label>
+                                    <select id="gioiTinh" name="gioiTinh" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">CCCD</label>
+                                    <input type="text" name="cccd" class="form-control" id="cccd" placeholder="Nhập CCCD">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">SDT</label>
+                                    <input type="text" name="sdt" class="form-control" id="sdt" placeholder="Nhập số điện thoại">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">Ngày vào làm</label>
+                                    <input type="text" name="ngayVaoLam" class="form-control" id="ngayVaoLam" placeholder="Chọn ngày vào làm">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">Chức vụ</label>
+                                    <select id="maCV" name="maCV" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btnClose btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btnSaveAdd btn btn-primary">Lưu và đóng</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 <script type="text/javascript">
+    var template = "/Template/tpl_nhanvien.html"
+    var chucvus = [];
     let navlink = document.querySelectorAll(".nav-link");
     navlink.forEach(i => {
         if (i.href.includes("@controller")) {
@@ -41,4 +140,180 @@
             i.classList.remove("active")
         }
     })
+
+    //Call server get data
+    $(document).ready(function () {
+        GetAllChucVu();
+        GetAll();
+
+        $("#ngaySinh").datepicker({ dateFormat: 'dd/mm/yy' });
+        $("#ngayVaoLam").datepicker({ dateFormat: 'dd/mm/yy' });
+
+        $(".btnAdd").on("click", function () {
+            InitGenderSelect();
+            InitChucVuSelect();
+
+            $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+            $('.modal-title').html("");
+            $('.modal-title').html("Thêm mới nhân viên");
+        });
+
+        $(".btnClose").on("click", function () {
+            $('#modalForm').find('input').val("");
+            $("#maCV").html("")
+            $("#gioiTinh").html("")
+        });
+
+        $(".btnSaveAdd").on("click", function () {
+            let form = $('#modalForm').serializeArray();
+            let model = uiUtils.objectifyForm(form)
+            if (model.id) {
+                if (model.hoTen) {
+                    $.ajax({
+                        type: "PUT",
+                        data: model,
+                        async: false,
+                        url: "@Url.Action("SuaNhanVien", "Nhanvien")",
+                        success: function (data) {
+                            $('#modal-default').modal('toggle');
+                            $('#modalForm').find('input').val("");
+                            $("#maCV").html("")
+                            $("#gioiTinh").html("")
+                            GetAll();
+                        },
+                        error: function () {
+                            $('#modalForm').find('input').val("");
+                            $("#maCV").html("")
+                            $("#gioiTinh").html("")
+                            GetAll();
+                        }
+                    });
+                } else {
+                    alert("Nhập tên nhân viên")
+                }
+            } else {
+                if (model.hoTen) {
+                    $.ajax({
+                        type: "POST",
+                        data: model,
+                        async: false,
+                        url: "@Url.Action("LuuNhanVien", "Nhanvien")",
+                        success: function (data) {
+                            $('#modal-default').modal('toggle');
+                            $('#modalForm').find('input').val("");
+                            $("#maCV").html("")
+                            $("#gioiTinh").html("")
+                            GetAll();
+                        },
+                        error: function () {
+                            $('#modalForm').find('input').val("");
+                            $("#maCV").html("")
+                            $("#gioiTinh").html("")
+                            GetAll();
+                        }
+                    });
+                } else {
+                    alert("Nhập tên nhân viên")
+                }
+            }
+        });
+    });
+
+    function GetAll() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAll", "Nhanvien")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.chucVu = chucvus.find(c => c.id == x.maCV).tenCV;
+                        x.gioiTinhText = x.gioiTinh ? "Nam" : "Nữ";
+                        x.ngaySinh = moment(x.ngaySinh).format('DD/MM/YYYY')
+                        x.ngayVaoLam = moment(x.ngayVaoLam).format('DD/MM/YYYY')
+                        x.serialNumber = index + 1;
+                    })
+
+                    $.Mustache.load(template + '?v=' + Math.random()).done(function () {
+                        $('#nhanvien-table').html('');
+                        $('#nhanvien-table').mustache('tpl-nhanvien-table', res);
+                        //Khai bao event cho button
+                        $(".btnEdit").on("click", function () {
+                            InitChucVuSelect();
+                            InitGenderSelect()
+                            let id = this.id.split('_')[1];
+                            $.ajax({
+                                type: "GET",
+                                data: { id: id },
+                                async: false,
+                                url: "@Url.Action("GetById", "Nhanvien")",
+                                success: function (data) {
+                                    $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                    $('.modal-title').html("");
+                                    $('.modal-title').html("Chỉnh sửa nhân viên");
+                                    data.data.ngaySinh = moment(data.data.ngaySinh).format('DD/MM/YYYY')
+                                    data.data.ngayVaoLam = moment(data.data.ngayVaoLam).format('DD/MM/YYYY')
+                                    data.data.gioiTinh = data.data.gioiTinh.toString();
+                                    $.each(data.data, function (key, value) {
+                                        $('#modalForm').find("input[name='" + key + "']").val(value);
+                                        $('#modalForm').find("select[name='" + key + "']").val(value);
+                                    });
+                                },
+                                error: function () {
+
+                                }
+                            });
+                        });
+
+                        $(".btnDelete").on("click", function () {
+                            let id = this.id.split('_')[1];
+                            $.ajax(
+                                {
+                                    type: "DELETE",
+                                    async: false,
+                                    data: { id: id },
+                                    url: "@Url.Action("XoaNhanVien", "Nhanvien")",
+                                    success: function (data) {
+                                        GetAll();
+                                    },
+                                    error: function () {
+                                        GetAll();
+                                    }
+                                });
+                        });
+
+                    });
+                }
+            },
+            error: function () { }
+        });
+    }
+
+    function GetAllChucVu() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllChucVu", "System")",
+            success: function (data) {
+                chucvus = [];
+                chucvus = data.data;
+            },
+            error: function () {
+                chucvus = [];
+            }
+        });
+    }
+
+    function InitChucVuSelect() {
+        $("#maCV").append($("<option disabled selected>--Chọn--</option>"));
+        chucvus.forEach(i => {
+            $("#maCV").append($("<option></option>").val(i.id).html(i.tenCV));
+        })
+    }
+
+    function InitGenderSelect() {
+        $("#gioiTinh").append($("<option disabled selected>--Chọn--</option>"));
+        $("#gioiTinh").append($("<option value='true'>Nam</option>"));
+        $("#gioiTinh").append($("<option value='false'>Nữ</option>"));
+    }
 </script>

@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using quanlykhachsan.Domains.Entities.Master;
 using quanlykhachsan.Domains.Entities.Product;
 
@@ -10,23 +8,12 @@ namespace quanlykhachsan.Domains
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            try
-            {
-                if (Database.GetService<IDatabaseCreator>() is RelationalDatabaseCreator dbCreator)
-                {
-                    if (!dbCreator.CanConnect()) dbCreator.Create();
-                    if (!dbCreator.HasTables()) dbCreator.CreateTables();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+
         }
 
         public DbSet<Chucvu> Chucvus { get; set; }
         public DbSet<Nhanvien> Nhanviens { get; set; }
-        public DbSet<Phanquyen> Phanquyens { get; set; }
+        public DbSet<Quyen> Quyens { get; set; }
         public DbSet<Taikhoan> Taikhoans { get; set; }
         public DbSet<Datdichvu> Datdichvus { get; set; }
         public DbSet<Dichvu> Dichvus { get; set; }

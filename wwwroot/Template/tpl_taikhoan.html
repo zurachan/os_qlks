@@ -1,17 +1,21 @@
-﻿<script type="text/html" id="tpl-quyen-table">
+﻿<script type="text/html" id="tpl-taikhoan-table">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>Tên quyền</th>
+                <th>Tên đăng nhập</th>
+                <th>Nhân viên</th>
+                <th>Quyền</th>
             </tr>
         </thead>
         <tbody>
             {{#data}}
             <tr data-row-id="{{id}}">
-                <td class="cvid" style="display:none">{{id}}</td>
                 <td>{{serialNumber}}</td>
-                <td class="cvname">{{tenQuyen}}</td>
+                <td class="hoTen">{{tenDangNhap}}</td>
+                <td class="ngaySinh">{{nhanVien}}</td>
+                <td class="diaChi">{{quyen}}</td>
+
                 <td width="100px">
                     <button id="edit_{{id}}" class="btnEdit btn btn-info btn-sm" title="Chỉnh sửa chức vụ">
                         <i class="fas fa-edit"></i>

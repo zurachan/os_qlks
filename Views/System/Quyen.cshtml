@@ -1,7 +1,7 @@
 ﻿@{
     var controller = ViewContext.RouteData.Values["controller"].ToString();
     var action = ViewContext.RouteData.Values["action"].ToString();
-    ViewData["Title"] = "Chức vụ";
+    ViewData["Title"] = "Phân quyền";
 }
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -13,7 +13,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item active">Chức vụ</li>
+                    <li class="breadcrumb-item active">Quyền hạn</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -28,20 +28,20 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Chức vụ</h3>
+                        <h3 class="card-title">Quyền hạn</h3>
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
                                 <div class="input-group-append">
                                     <button type="button" class="btnAdd btn btn-primary">
                                         <i class="fas fa-plus"></i>
-                                        Thêm mới chức vụ
+                                        Thêm quyền hạn
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body" id="chucvu-table">
+                    <div class="card-body" id="quyen-table">
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -56,18 +56,18 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Thêm mới chức vụ</h4>
+                <h4 class="modal-title">Thêm mới quyền</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="quickForm">
+                <form id="modalForm">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="tencv">Tên chức vụ</label>
-                            <input type="hidden" id="idcv">
-                            <input type="text" name="text" class="form-control" id="tencv" placeholder="Nhập chức vụ">
+                            <label for="tencv">Tên quyền</label>
+                            <input type="hidden" id="id" name="id">
+                            <input type="text" name="tenQuyen" class="form-control" id="tenQuyen" placeholder="Nhập tên quyền">
                         </div>
                     </div>
                 </form>
@@ -82,11 +82,9 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
 <!-- /.content -->
-
 <script type="text/javascript">
-    var template = "/Template/tpl_chucvu.html"
+    var template = "/Template/tpl_quyen.html"
     //set active side menu
     let navlink = document.querySelectorAll(".nav-link");
     navlink.forEach(i => {
@@ -100,77 +98,70 @@
 
     //Call server get data
     $(document).ready(function () {
-        GetAll();
+        GetAllQuyen();
         $(".btnAdd").on("click", function () {
             $('#modal-default').modal({ backdrop: 'static', keyboard: false });
             $('.modal-title').html("");
-            $('.modal-title').html("Thêm mới chức vụ");
+            $('.modal-title').html("Thêm mới quyền");
 
         });
 
         $(".btnClose").on("click", function () {
-            $('#tencv').val("");
-            $('#idcv').val("")
+            $('#modalForm').find('input').val("");
         });
 
         $(".btnSaveAdd").on("click", function () {
-            if ($('#idcv').val()) {
-                if ($('#tencv').val()) {
-                    let data = {
-                        id: $('#idcv').val(),
-                        tenCV: $('#tencv').val()
-                    }
+            let form = $('#modalForm').serializeArray();
+            let model = uiUtils.objectifyForm(form);
+            debugger
+            if (model.id) {
+                if (model.tenQuyen) {
                     $.ajax(
                         {
                             type: "PUT",
-                            data: data,
-                            url: "@Url.Action("SuaChucVu", "System")",
+                            data: model,
+                            url: "@Url.Action("SuaQuyen", "System")",
                             success: function (data) {
                                 $('#modal-default').modal('toggle');
-                                $('#tencv').val("");
-                                $('#idcv').val("")
-                                GetAll();
+                                $('#modalForm').find('input').val("");
+                                GetAllQuyen();
                             },
                             error: function () {
-                                $('#tencv').val("");
-                                $('#idcv').val("");
-                                GetAll();
+                                $('#modalForm').find('input').val("");
+                                GetAllQuyen();
                             }
                         });
                 } else {
-                    alert("Nhập tên chức vụ")
+                    alert("Nhập tên quyền")
                 }
             } else {
-                if ($('#tencv').val()) {
-                    let data = {
-                        tenCV: $('#tencv').val()
-                    }
+                if (model.tenQuyen) {
                     $.ajax(
                         {
                             type: "POST",
-                            data: data,
-                            url: "@Url.Action("LuuChucVu", "System")",
+                            data: model,
+                            url: "@Url.Action("LuuQuyen", "System")",
                             success: function (data) {
                                 $('#modal-default').modal('toggle');
-                                $('#tencv').val("");
-                                GetAll();
+                                $('#modalForm').find('input').val("");
+                                GetAllQuyen();
                             },
                             error: function () {
-                                $('#tencv').val("");
-                                GetAll();
+                                $('#modalForm').find('input').val("");
+                                GetAllQuyen();
                             }
                         });
                 } else {
-                    alert("Nhập tên chức vụ")
+                    alert("Nhập tên quyền")
                 }
             }
         });
     });
 
-    function GetAll() {
+    function GetAllQuyen() {
         $.ajax({
             type: "GET",
-            url: "@Url.Action("GetAllChucVu", "System")",
+            url: "@Url.Action("GetAllQuyen", "System")",
             success: function (res) {
                 if (res.success) {
                     res.data.map((x, index) => {
@@ -178,18 +169,30 @@
                     })
 
                     $.Mustache.load(template + '?v=' + Math.random()).done(function () {
-                        $('#chucvu-table').html('');
-                        $('#chucvu-table').mustache('tpl-chucvu-table', res);
+                        $('#quyen-table').html('');
+                        $('#quyen-table').mustache('tpl-quyen-table', res);
 
                         //Khai bao event cho button
                         $(".btnEdit").on("click", function () {
                             let id = this.id.split('_')[1];
-                            let name = $('tr[data-row-id*=' + id + ']').find(".cvname").html();
-                            $('#modal-default').modal({ backdrop: 'static', keyboard: false });
-                            $('.modal-title').html("");
-                            $('.modal-title').html("Chỉnh sửa chức vụ");
-                            $('#tencv').val(name);
-                            $('#idcv').val(id);
+                            $.ajax({
+                                type: "GET",
+                                data: { id: id },
+                                async: false,
+                                url: "@Url.Action("GetByIdQuyen", "System")",
+                                success: function (data) {
+                                    $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                    $('.modal-title').html("");
+                                    $('.modal-title').html("Chỉnh sửa quyền");
+                                    console.log(data.data);
+                                    $.each(data.data, function (key, value) {
+                                        $('#modalForm').find("input[name='" + key + "']").val(value);
+                                    });
+                                },
+                                error: function () {
+
+                                }
+                            });
                         });
 
                         $(".btnDelete").on("click", function () {
@@ -198,12 +201,12 @@
                                 {
                                     type: "DELETE",
                                     data: { id: id },
-                                    url: "@Url.Action("XoaChucVu", "System")",
+                                    url: "@Url.Action("XoaQuyen", "System")",
                                     success: function (data) {
-                                        GetAll();
+                                        GetAllQuyen();
                                     },
                                     error: function () {
-                                        GetAll();
+                                        GetAllQuyen();
                                     }
                                 });
                         });

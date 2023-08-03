@@ -21,7 +21,7 @@ namespace quanlykhachsan.Domains.Entities.Master
         [Column("macv")]
         public int MaCV { get; set; }
         [Column("cccd")]
-        public int CCCD { get; set; }
+        public string CCCD { get; set; }
         [Column("ngayvaolam")]
         public DateTime NgayVaoLam { get; set; }
         [Column("sdt")]

@@ -1,19 +1,18 @@
 ﻿@{
     var controller = ViewContext.RouteData.Values["controller"].ToString();
-    var action = ViewContext.RouteData.Values["action"].ToString();
-    ViewData["Title"] = "Tài khoản";
+    ViewData["Title"] = "Khách hàng";
 }
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Quản trị hệ thống</h1>
+                <h1 class="m-0">Quản lý khách hàng</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item active">Tài khoản</li>
+                    <li class="breadcrumb-item active">Quản lý khách hàng</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -28,20 +27,20 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Danh sách nhân viên</h3>
+                        <h3 class="card-title">Danh sách khách hàng</h3>
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
                                 <div class="input-group-append">
                                     <button type="button" class="btnAdd btn btn-primary">
                                         <i class="fas fa-plus"></i>
-                                        Thêm nhân viên
+                                        Thêm khách hàng
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body" id="taikhoan-table">
+                    <div class="card-body" id="khachhang-table">
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -53,10 +52,10 @@
 </section>
 
 <div class="modal fade" id="modal-default">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Thêm nhân viên</h4>
+                <h4 class="modal-title">Thêm khách hàng</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -65,24 +64,29 @@
                 <form id="modalForm">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="tenDangNhap">Tên đăng nhập</label>
+                                    <label for="tencv">Họ và tên</label>
                                     <input type="hidden" id="id" name="id">
-                                    <input type="text" name="tenDangNhap" class="form-control" id="tenDangNhap" placeholder="Nhập username">
+                                    <input type="text" name="hoTen" class="form-control" id="hoTen" placeholder="Nhập họ tên">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="maNV">Nhân viên</label>
-                                    <select id="maNV" name="maNV" class="form-control"></select>
+                                    <label for="tencv">Email</label>
+                                    <input type="text" name="email" class="form-control" id="email" placeholder="Nhập email">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="maQuyen">Quyền</label>
-                                    <select id="maQuyen" name="maQuyen" class="form-control">
-                                    </select>
+                                    <label for="tencv">Địa chỉ</label>
+                                    <input type="text" name="diaChi" class="form-control" id="diaChi" placeholder="Nhập địa chỉ">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tencv">SDT</label>
+                                    <input type="text" name="sdt" class="form-control" id="sdt" placeholder="Nhập số điện thoại">
                                 </div>
                             </div>
                         </div>
@@ -99,140 +103,105 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
-<script type="text/javascript">
-    var template = "/Template/tpl_taikhoan.html"
-    var quyens = [];
-    var nhanviens = [];
+<script>
+    var template = "/Template/tpl_khachhang.html"
     let navlink = document.querySelectorAll(".nav-link");
     navlink.forEach(i => {
-        if (i.href.includes("@controller") && i.href.includes("@action")) {
+        if (i.href.includes("@controller")) {
             i.classList.add("active");
         } else {
             i.classList.remove("active")
         }
     })
 
-    //Call server get data
     $(document).ready(function () {
-        GetAllQuyen();
-        GetAllNhanVien(true);
-        GetAllTaiKhoan();
-
+        GetAllKhachhang();
         $(".btnAdd").on("click", function () {
-            InitQuyenSelect();
-            GetAllNhanVien(false);
-            InitNhanVienSelect();
-
             $('#modal-default').modal({ backdrop: 'static', keyboard: false });
             $('.modal-title').html("");
-            $('.modal-title').html("Tạo mới tài khoản");
+            $('.modal-title').html("Thêm mới khách hàng");
+
         });
 
         $(".btnClose").on("click", function () {
             $('#modalForm').find('input').val("");
-            $("#maNV").html("")
-            $("#maQuyen").html("")
         });
 
         $(".btnSaveAdd").on("click", function () {
             let form = $('#modalForm').serializeArray();
-            let model = uiUtils.objectifyForm(form)
+            let model = uiUtils.objectifyForm(form);
             if (model.id) {
-                if (model.tenDangNhap) {
-                    $.ajax({
-                        type: "PUT",
-                        data: model,
-                        async: false,
-                        url: "@Url.Action("SuaTaiKhoan", "System")",
-                        success: function (data) {
-                            debugger
-                            $('#modal-default').modal('toggle');
-                            $('#modalForm').find('input').val("");
-                            $("#maNV").html("")
-                            $("#maQuyen").html("")
-                            GetAllNhanVien(true);
-                            GetAllTaiKhoan();
-                        },
-                        error: function () {
-                            $('#modalForm').find('input').val("");
-                            $("#maNV").html("")
-                            $("#maQuyen").html("")
-                            GetAllNhanVien(true);
-                            GetAllTaiKhoan();
-                        }
-                    });
+                if (model.hoTen) {
+                    $.ajax(
+                        {
+                            type: "PUT",
+                            data: model,
+                            url: "@Url.Action("SuaKhachhang", "Khachhang")",
+                            success: function (data) {
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                GetAllKhachhang();
+                            },
+                            error: function () {
+                                $('#modalForm').find('input').val("");
+                                GetAllKhachhang();
+                            }
+                        });
                 } else {
-                    alert("Nhập username")
+                    alert("Nhập tên khách hàng")
                 }
             } else {
-                if (model.tenDangNhap) {
+                if (model.hoTen) {
                     $.ajax(
                         {
                             type: "POST",
                             data: model,
-                            async: false,
-                            url: "@Url.Action("LuuTaiKhoan", "System")",
+                            url: "@Url.Action("LuuKhachhang", "Khachhang")",
                             success: function (data) {
-                                debugger
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
-                                $("#maNV").html("")
-                                $("#maQuyen").html("")
-                                GetAllNhanVien(true);
-                                GetAllTaiKhoan();
+                                GetAllKhachhang();
                             },
                             error: function () {
-                                debugger;
                                 $('#modalForm').find('input').val("");
-                                $("#maNV").html("")
-                                $("#maQuyen").html("")
-                                GetAllNhanVien(true);
-                                GetAllTaiKhoan();
+                                GetAllKhachhang();
                             }
                         });
                 } else {
-                    alert("Nhập username")
+                    alert("Nhập tên khách hàng")
                 }
             }
         });
     });
 
-    function GetAllTaiKhoan() {
+    function GetAllKhachhang() {
         $.ajax({
             type: "GET",
-            async: false,
-            url: "@Url.Action("GetAllTaiKhoan", "System")",
+            url: "@Url.Action("GetAllKhachhang", "Khachhang")",
             success: function (res) {
                 if (res.success) {
                     res.data.map((x, index) => {
-                        x.nhanVien = nhanviens.find(c => c.id == x.maNV).hoTen;
-                        x.quyen = quyens.find(c => c.id == x.maQuyen).tenQuyen;
-
                         x.serialNumber = index + 1;
                     })
 
                     $.Mustache.load(template + '?v=' + Math.random()).done(function () {
-                        $('#taikhoan-table').html('');
-                        $('#taikhoan-table').mustache('tpl-taikhoan-table', res);
+                        $('#khachhang-table').html('');
+                        $('#khachhang-table').mustache('tpl-khachhang-table', res);
+
                         //Khai bao event cho button
                         $(".btnEdit").on("click", function () {
-                            GetAllNhanVien(true);
-                            InitNhanVienSelect();
-                            InitQuyenSelect()
                             let id = this.id.split('_')[1];
                             $.ajax({
                                 type: "GET",
                                 data: { id: id },
                                 async: false,
-                                url: "@Url.Action("GetByIdTaiKhoan", "System")",
+                                url: "@Url.Action("GetByIdKhachhang", "Khachhang")",
                                 success: function (data) {
                                     $('#modal-default').modal({ backdrop: 'static', keyboard: false });
                                     $('.modal-title').html("");
-                                    $('.modal-title').html("Chỉnh sửa nhân viên");
+                                    $('.modal-title').html("Chỉnh sửa khách hàng");
                                     $.each(data.data, function (key, value) {
                                         $('#modalForm').find("input[name='" + key + "']").val(value);
-                                        $('#modalForm').find("select[name='" + key + "']").val(value);
                                     });
                                 },
                                 error: function () {
@@ -246,16 +215,13 @@
                             $.ajax(
                                 {
                                     type: "DELETE",
-                                    async: false,
                                     data: { id: id },
-                                    url: "@Url.Action("XoaTaiKhoan", "System")",
+                                    url: "@Url.Action("XoaKhachhang", "Khachhang")",
                                     success: function (data) {
-                                        GetAllNhanVien(true);
-                                        GetAllTaiKhoan();
+                                        GetAllKhachhang();
                                     },
                                     error: function () {
-                                        GetAllNhanVien(true);
-                                        GetAllTaiKhoan();
+                                        GetAllKhachhang();
                                     }
                                 });
                         });
@@ -265,50 +231,5 @@
             },
             error: function () { }
         });
-    }
-
-    function GetAllQuyen() {
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "@Url.Action("GetAllQuyen", "System")",
-            success: function (data) {
-                quyens = [];
-                quyens = data.data;
-            },
-            error: function () {
-                quyens = [];
-            }
-        });
-    }
-
-    function GetAllNhanVien(hasAccount) {
-        $.ajax({
-            type: "GET",
-            data: { hasAccount: hasAccount },
-            async: false,
-            url: "@Url.Action("GetAll", "Nhanvien")",
-            success: function (data) {
-                nhanviens = [];
-                nhanviens = data.data;
-            },
-            error: function () {
-                nhanviens = [];
-            }
-        });
-    }
-
-    function InitNhanVienSelect() {
-        $("#maNV").append($("<option disabled selected>--Chọn--</option>"));
-        nhanviens.forEach(i => {
-            $("#maNV").append($("<option></option>").val(i.id).html(i.hoTen));
-        })
-    }
-
-    function InitQuyenSelect() {
-        $("#maQuyen").append($("<option disabled selected>--Chọn--</option>"));
-        quyens.forEach(i => {
-            $("#maQuyen").append($("<option></option>").val(i.id).html(i.tenQuyen));
-        })
     }
 </script>

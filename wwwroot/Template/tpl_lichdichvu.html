@@ -1,10 +1,13 @@
-﻿<script type="text/html" id="tpl-dichvu-table">
+﻿<script type="text/html" id="tpl-lichdichvu-table">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>Tên dịch vụ</th>
-                <th>Giá dịch vụ</th>
+                <th>Dịch vụ</th>
+                <th>Ngày giờ</th>
+                <th>Nhiệm vụ</th>
+                <th>Địa điểm</th>
+                <th>Ghi chú</th>
                 <th style="display: flex;justify-content: center;">
                     <button class="btnAdd btn btn-primary btn-sm" title="Thêm phòng">
                         <i class="fas fa-plus"></i>
@@ -15,10 +18,13 @@
         <tbody>
             {{#data}}
             <tr data-row-id="{{id}}">
-                <td class="cvid" style="display:none">{{id}}</td>
+                <td class="id" style="display:none">{{id}}</td>
                 <td>{{serialNumber}}</td>
-                <td class="cvname">{{tenDV}}</td>
-                <td class="cvname">{{giaDV}}</td>
+                <td class="maDV">{{maDV}}</td>
+                <td class="ngayGio">{{ngayGio}}</td>
+                <td class="nhiemVu">{{nhiemVu}}</td>
+                <td class="diaDiem">{{diaDiem}}</td>
+                <td class="ghiChu">{{ghiChu}}</td>
                 <td width="100px">
                     <button id="edit_{{id}}" class="btnEdit btn btn-info btn-sm" title="Chỉnh sửa chức vụ">
                         <i class="fas fa-edit"></i>

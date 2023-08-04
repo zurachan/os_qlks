@@ -1,6 +1,6 @@
 ﻿@{
     var controller = ViewContext.RouteData.Values["controller"].ToString();
-    ViewData["Title"] = "Nhân viên";
+    ViewData["Title"] = "Tài chính";
 }
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -23,23 +23,101 @@
 <section class="content">
     <div class="container-fluid">
         <!-- Main row -->
-        <div class="row">
-            Tài chính list view
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="tabHoaDon" data-toggle="pill"
+                                data-target="#tabHoaDonContent" role="tab" aria-controls="tabHoaDonContent"
+                                aria-selected="true">
+                            Hóa đơn
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="tabDoanhThu" data-toggle="pill"
+                                data-target="#tabDoanhThuContent" role="tab" aria-controls="tabDoanhThuContent"
+                                aria-selected="false">
+                            Doanh thu
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="tabHoaDonContent" role="tabpanel"
+                         aria-labelledby="tabHoaDon">
+                    </div>
+                    <div class="tab-pane fade" id="tabDoanhThuContent" role="tabpanel"
+                         aria-labelledby="tabDoanhThu">
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
         </div>
         <!-- /.row (main row) -->
     </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
 <script type="text/javascript">
-    let navlink = document.querySelectorAll(".nav-link");
+    var template = "/Template/tpl_taichinh.html"
+    var nhanviens = [];
+    //set active side menu
+    let navlink = document.querySelectorAll(".side-nav-item");
     navlink.forEach(i => {
         debugger
         if (i.href.includes("@controller")) {
-            debugger
             i.classList.add("active");
         } else {
-            debugger
             i.classList.remove("active")
         }
     })
+    //
+
+    //Call server get data
+    $(document).ready(function () {
+        GetAllNhanVien();
+        GetAllHoadon();
+        $('#tabHoaDon').on('click', function () {
+            GetAllHoadon();
+        })
+        $('#tabDoanhThu').on('click', function () {
+
+        })
+    });
+
+    function GetAllHoadon() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllHoadon", "Taichinh")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.serialNumber = index + 1;
+                        x.ngayThanhToan = moment(x.ngayThanhToan).format("DD/MM/yyyy");
+                        x.nhanVien = nhanviens.find(c => c.id == x.maNV).hoTen;
+                    })
+
+                    $.Mustache.load(template + '?v=' + Math.random()).done(function () {
+                        $('#tabHoaDonContent').html('');
+                        $('#tabHoaDonContent').mustache('tpl-hoadon-table', res);
+                    });
+                }
+            },
+            error: function () { }
+        });
+    }
+
+    function GetAllNhanVien() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAll", "Nhanvien")",
+            success: function (data) {
+                nhanviens = [];
+                nhanviens = data.data;
+            },
+            error: function () {
+                nhanviens = [];
+            }
+        });
+    }
 </script>

@@ -15,9 +15,13 @@ namespace quanlykhachsan.Controllers
             _taikhoanService = taikhoanService;
         }
 
-        [Authorize(Roles = "Administrator,End User")]
         public IActionResult Index()
         {
+            string token = HttpContext.Session.GetString("Token");
+            if (token == null)
+            {
+                return (RedirectToAction("Login", "Home"));
+            }
             return View();
         }
 

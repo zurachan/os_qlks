@@ -5,7 +5,6 @@ using quanlykhachsan.Services;
 
 namespace quanlykhachsan.Controllers
 {
-    [Authorize]
     public class SystemController : Controller
     {
         private readonly IChucvuService _chucvuService;
@@ -21,6 +20,11 @@ namespace quanlykhachsan.Controllers
         //Quyen
         public IActionResult Quyen()
         {
+            string token = HttpContext.Session.GetString("Token");
+            if (token == null)
+            {
+                return (RedirectToAction("Login", "Home"));
+            }
             var chucVu = HttpContext.Session.GetString("ChucVu");
             if (!string.IsNullOrEmpty(chucVu) && chucVu != "Admin")
                 return RedirectToAction("Error", "Home");
@@ -81,6 +85,11 @@ namespace quanlykhachsan.Controllers
         //Chuc vu
         public IActionResult Chucvu()
         {
+            string token = HttpContext.Session.GetString("Token");
+            if (token == null)
+            {
+                return (RedirectToAction("Login", "Home"));
+            }
             var chucVu = HttpContext.Session.GetString("ChucVu");
             if (!string.IsNullOrEmpty(chucVu) && chucVu != "Admin")
                 return RedirectToAction("Error", "Home");
@@ -135,6 +144,11 @@ namespace quanlykhachsan.Controllers
         //Tai khoan
         public IActionResult Taikhoan()
         {
+            string token = HttpContext.Session.GetString("Token");
+            if (token == null)
+            {
+                return (RedirectToAction("Login", "Home"));
+            }
             var chucVu = HttpContext.Session.GetString("ChucVu");
             if (!string.IsNullOrEmpty(chucVu) && chucVu != "Admin")
                 return RedirectToAction("Error", "Home");

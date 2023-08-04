@@ -1,0 +1,25 @@
+﻿<script type="text/html" id="tpl-hoadon-table">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 10px">#</th>
+                <th>Mã phiếu đặt phòng</th>
+                <th>Nhân viên đặt</th>
+                <th>Ngày thanh toán</th>
+                <th>Số tiền thanh toán</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#data}}
+            <tr data-row-id="{{id}}">
+                <td class="id" style="display:none">{{id}}</td>
+                <td>{{serialNumber}}</td>
+                <td class="maPDP">{{maPDP}}</td>
+                <td class="nhanVien">{{nhanVien}}</td>
+                <td class="ngayThanhToan">{{ngayThanhToan}}</td>
+                <td class="soTienThanhToan">{{soTienThanhToan}}</td>
+            </tr>
+            {{/data}}
+        </tbody>
+    </table>
+</script>

@@ -5,7 +5,7 @@ using quanlykhachsan.Services;
 
 namespace quanlykhachsan.Controllers
 {
-    [Authorize]
+
     public class KhachhangController : Controller
     {
         private readonly IKhachhangService _khachhangService;
@@ -14,9 +14,14 @@ namespace quanlykhachsan.Controllers
             _khachhangService = khachhangService;
         }
 
-        [Authorize]
+
         public IActionResult Index()
         {
+            string token = HttpContext.Session.GetString("Token");
+            if (token == null)
+            {
+                return (RedirectToAction("Login", "Home"));
+            }
             var chucVu = HttpContext.Session.GetString("ChucVu");
             if (chucVu != "Lễ tân" && chucVu != "Admin")
                 return RedirectToAction("Error", "Home");

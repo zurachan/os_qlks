@@ -39,6 +39,9 @@
     <script type='text/javascript' src='~/adminlte/plugins/jquery-mustache/mustache.min.js'></script>
     <script type='text/javascript' src="~/adminlte/plugins/jquery-mustache/jquery.mustache.min.js"></script>
     <script type='text/javascript' src="~/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
+
+    <link rel="stylesheet" href="~/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" />
+    <script type="text/javascript" src="~/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
@@ -146,10 +149,10 @@
                             </li>
                         }
 
-                        @if (ChucVu == "Kế toán")
+                        @if (ChucVu == "Tài chính")
                         {
                             <li class="nav-item">
-                                <a asp-controller="Taichinh" asp-action="Index" class="nav-link">
+                                <a asp-controller="Taichinh" asp-action="Index" class="nav-link side-nav-item">
                                     <i class="nav-icon fas fa-money-check"></i>
                                     <p>
                                         Quản lý tài chính
@@ -161,7 +164,7 @@
                         @if (ChucVu == "Dịch vụ")
                         {
                             <li class="nav-item">
-                                <a asp-controller="Dichvu" asp-action="Index" class="nav-link">
+                                <a asp-controller="Dichvu" asp-action="Index" class="nav-link side-nav-item">
                                     <i class="nav-icon fas fa-server"></i>
                                     <p>
                                         Quản lý dịch vụ
@@ -198,7 +201,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a asp-controller="Taichinh" asp-action="Index" class="nav-link">
+                                <a asp-controller="Taichinh" asp-action="Index" class="nav-link side-nav-item">
                                     <i class="nav-icon fas fa-money-check"></i>
                                     <p>
                                         Quản lý tài chính
@@ -206,7 +209,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a asp-controller="Dichvu" asp-action="Index" class="nav-link">
+                                <a asp-controller="Dichvu" asp-action="Index" class="nav-link side-nav-item">
                                     <i class="nav-icon fas fa-server"></i>
                                     <p>
                                         Quản lý dịch vụ

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using quanlykhachsan.Domains.Entities.Master;
+﻿using Microsoft.AspNetCore.Mvc;
 using quanlykhachsan.Domains.Entities.Product;
 using quanlykhachsan.Services;
 
@@ -15,9 +13,15 @@ namespace quanlykhachsan.Controllers
 
         }
 
-        [Authorize]
+
         public IActionResult Index()
         {
+            string token = HttpContext.Session.GetString("Token");
+            if (token == null)
+            {
+                return (RedirectToAction("Login", "Home"));
+            }
+
             ViewBag.CanAdd = true;
             var ChucVu = HttpContext.Session.GetString("ChucVu");
             if (ChucVu == "Lễ tân")
@@ -84,14 +88,12 @@ namespace quanlykhachsan.Controllers
             var res = _phongService.GetAllPhong();
             return Json(new { Success = true, data = res });
         }
-
         [HttpGet]
         public JsonResult GetByIdPhong(int id)
         {
             var res = _phongService.GetByIdPhong(id);
             return Json(new { Success = true, data = res });
         }
-
         [HttpPost]
         public JsonResult LuuPhong(Phong model)
         {
@@ -105,7 +107,6 @@ namespace quanlykhachsan.Controllers
                 return Json(new { Success = false });
             }
         }
-
         [HttpPut]
         public JsonResult SuaPhong(Phong model)
         {
@@ -119,7 +120,6 @@ namespace quanlykhachsan.Controllers
                 return Json(new { Success = false });
             }
         }
-
         [HttpDelete]
         public bool XoaPhong(int id)
         {
@@ -133,7 +133,5 @@ namespace quanlykhachsan.Controllers
                 return false;
             }
         }
-
-
     }
 }

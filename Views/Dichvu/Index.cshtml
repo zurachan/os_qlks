@@ -1,6 +1,8 @@
 ﻿@{
     var controller = ViewContext.RouteData.Values["controller"].ToString();
     ViewData["Title"] = "Dịch vụ";
+    var canAddDichVu = (bool)ViewBag.CanAddDichVu;
+    var canAddLich = (bool)ViewBag.CanAddLich;
 }
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -22,40 +24,44 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <!-- Main row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Dịch vụ</h3>
-                        <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <div class="input-group-append">
-                                    <button type="button" class="btnAdd btn btn-primary">
-                                        <i class="fas fa-plus"></i>
-                                        Thêm dịch vụ
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="tabDichVu" data-toggle="pill"
+                                data-target="#tabDichVuContent" role="tab" aria-controls="tabDichVuContent"
+                                aria-selected="true">
+                            Dịch vụ
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="tabLichDichVu" data-toggle="pill"
+                                data-target="#tabLichDichVuContent" role="tab" aria-controls="tabLichDichVuContent"
+                                aria-selected="false">
+                            Lịch dịch vụ
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="tabDichVuContent" role="tabpanel"
+                         aria-labelledby="tabDichVu">
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body" id="dichvu-table">
+                    <div class="tab-pane fade" id="tabLichDichVuContent" role="tabpanel"
+                         aria-labelledby="tabLichDichVu">
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
             </div>
+            <!-- /.card -->
         </div>
         <!-- /.row (main row) -->
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
 <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Thêm mới dịch vụ</h4>
+                <h4 class="modal-title"></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -63,15 +69,6 @@
             <div class="modal-body">
                 <form id="modalForm">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="tencv">Tên dịch vụ</label>
-                            <input type="hidden" id="id" name="id">
-                            <input type="text" name="tenDV" class="form-control" id="tenDV" placeholder="Nhập tên dịch vụ">
-                        </div>
-                        <div class="form-group">
-                            <label for="tencv">Giá dịch vụ</label>
-                            <input type="text" name="giaDV" class="form-control" id="giaDV" placeholder="Nhập giá dịch vụ">
-                        </div>
                     </div>
                 </form>
             </div>
@@ -87,9 +84,15 @@
 </div>
 <!-- /.content -->
 <script type="text/javascript">
-    var template = "/Template/tpl_dichvu.html"
+    var templateDichVu = "/Template/tpl_dichvu.html"
+    var templateDichVuPopup = "/Template/tpl_dichvu_popup.html"
+    var templateLichDichVu = "/Template/tpl_lichdichvu.html"
+    var templateLichDichVuPopup = "/Template/tpl_lichdichvu_popup.html"
+    var canAdd = @canAddDichVu.ToString().ToLower();
+    var canAddLich = @canAddLich.ToString().ToLower();
+    var dichvus = [];
     //set active side menu
-    let navlink = document.querySelectorAll(".nav-link");
+    let navlink = document.querySelectorAll(".side-nav-item");
     navlink.forEach(i => {
         if (i.href.includes("@controller")) {
             i.classList.add("active");
@@ -102,60 +105,102 @@
     //Call server get data
     $(document).ready(function () {
         GetAllDichvu();
-        $(".btnAdd").on("click", function () {
-            $('#modal-default').modal({ backdrop: 'static', keyboard: false });
-            $('.modal-title').html("");
-            $('.modal-title').html("Thêm mới dịch vụ");
 
-        });
+        $('#tabDichVu').on('click', function () {
+            GetAllDichvu();
+        })
+        $('#tabLichDichVu').on('click', function () {
+            GetAllDichVuData();
+            GetAllLichdichVu();
+        })
 
         $(".btnClose").on("click", function () {
             $('#modalForm').find('input').val("");
+            $('#modalForm').find('select').html("");
         });
 
         $(".btnSaveAdd").on("click", function () {
             let form = $('#modalForm').serializeArray();
             let model = uiUtils.objectifyForm(form);
-            if (model.id) {
-                if (model.tenDV) {
-                    $.ajax(
-                        {
+            var countProp = Object.keys(model);
+            switch (countProp.length) {
+                case 3://Dich vu
+                    if (model.id) {
+                        if (model.tenDV) {
+                            $.ajax({
+                                type: "PUT",
+                                data: model,
+                                url: "@Url.Action("SuaDichvu", "Dichvu")",
+                                success: function (data) {
+                                    $('#modal-default').modal('toggle');
+                                    $('#modalForm').find('input').val("");
+                                    GetAllDichvu();
+                                },
+                                error: function () {
+                                    $('#modalForm').find('input').val("");
+                                    GetAllDichvu();
+                                }
+                            });
+                        } else {
+                            alert("Nhập tên dịch vụ")
+                        }
+                    } else {
+                        if (model.tenDV) {
+                            $.ajax({
+                                type: "POST",
+                                data: model,
+                                url: "@Url.Action("LuuDichvu", "Dichvu")",
+                                success: function (data) {
+                                    $('#modal-default').modal('toggle');
+                                    $('#modalForm').find('input').val("");
+                                    GetAllDichvu();
+                                },
+                                error: function () {
+                                    $('#modalForm').find('input').val("");
+                                    GetAllDichvu();
+                                }
+                            });
+                        } else {
+                            alert("Nhập tên dịch vụ")
+                        }
+                    }
+                    break;
+
+                case 6://Lich dich vu
+                    if (model.id) {
+                        $.ajax({
                             type: "PUT",
                             data: model,
-                            url: "@Url.Action("SuaDichvu", "Dichvu")",
+                            url: "@Url.Action("SuaLichdichvu", "Dichvu")",
                             success: function (data) {
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
-                                GetAllDichvu();
+                                $('#modalForm').find('select').val("");
+                                GetAllLichdichVu();
                             },
                             error: function () {
                                 $('#modalForm').find('input').val("");
-                                GetAllDichvu();
+                                GetAllLichdichVu();
                             }
                         });
-                } else {
-                    alert("Nhập tên dịch vụ")
-                }
-            } else {
-                if (model.tenDV) {
-                    $.ajax(
-                        {
+                    } else {
+                        $.ajax({
                             type: "POST",
                             data: model,
-                            url: "@Url.Action("LuuDichvu", "Dichvu")",
+                            url: "@Url.Action("LuuLichdichvu", "Dichvu")",
                             success: function (data) {
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
-                                GetAllDichvu();
+                                $('#modalForm').find('select').val("");
+                                GetAllLichdichVu();
                             },
                             error: function () {
                                 $('#modalForm').find('input').val("");
-                                GetAllDichvu();
+                                GetAllLichdichVu();
                             }
                         });
-                } else {
-                    alert("Nhập tên dịch vụ")
-                }
+                    }
+                    break;
             }
         });
     });
@@ -163,46 +208,69 @@
     function GetAllDichvu() {
         $.ajax({
             type: "GET",
+            async: false,
             url: "@Url.Action("GetAllDichvu", "Dichvu")",
             success: function (res) {
                 if (res.success) {
                     res.data.map((x, index) => {
                         x.serialNumber = index + 1;
                     })
+                    dichvus = res.data;
+                    $.Mustache.load(templateDichVu + '?v=' + Math.random()).done(function () {
+                        $('#tabDichVuContent').html('');
+                        $('#tabDichVuContent').mustache('tpl-dichvu-table', res);
 
-                    $.Mustache.load(template + '?v=' + Math.random()).done(function () {
-                        $('#dichvu-table').html('');
-                        $('#dichvu-table').mustache('tpl-dichvu-table', res);
+                        $(".btnAdd").parent().hide();
+                        $(".btnEdit").parent().hide();
+                        $(".btnDelete").parent().hide();
+                        if (canAdd) {
+                            $(".btnAdd").parent().show();
+                            $(".btnEdit").parent().show();
+                            $(".btnDelete").parent().show();
+                            //Khai bao event cho button
+                            $(".btnAdd").on("click", function () {
+                                $.Mustache.load(templateDichVuPopup + '?v=' + Math.random()).done(function () {
+                                    $('#modalForm').html('');
+                                    $('#modalForm').mustache('tpl-dichvu-popup');
 
-                        //Khai bao event cho button
-                        $(".btnEdit").on("click", function () {
-                            let id = this.id.split('_')[1];
-                            $.ajax({
-                                type: "GET",
-                                data: { id: id },
-                                async: false,
-                                url: "@Url.Action("GetByIdDichvu", "Dichvu")",
-                                success: function (data) {
                                     $('#modal-default').modal({ backdrop: 'static', keyboard: false });
                                     $('.modal-title').html("");
-                                    $('.modal-title').html("Chỉnh sửa dịch vụ");
-                                    console.log(data.data);
-                                    $.each(data.data, function (key, value) {
-                                        $('#modalForm').find("input[name='" + key + "']").val(value);
-                                    });
-                                },
-                                error: function () {
-
-                                }
+                                    $('.modal-title').html("Thêm mới dịch vụ");
+                                })
                             });
-                        });
 
-                        $(".btnDelete").on("click", function () {
-                            let id = this.id.split('_')[1];
-                            $.ajax(
-                                {
+                            $(".btnEdit").on("click", function () {
+                                let id = this.id.split('_')[1];
+                                $.ajax({
+                                    type: "GET",
+                                    data: { id: id },
+                                    async: false,
+                                    url: "@Url.Action("GetByIdDichvu", "Dichvu")",
+                                    success: function (data) {
+                                        $.Mustache.load(templateDichVuPopup + '?v=' + Math.random()).done(function () {
+                                            $('#modalForm').html('');
+                                            $('#modalForm').mustache('tpl-dichvu-popup');
+                                            $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                            $('.modal-title').html("");
+                                            $('.modal-title').html("Chỉnh sửa dịch vụ");
+                                            console.log(data.data);
+                                            $.each(data.data, function (key, value) {
+                                                $('#modalForm').find("input[name='" + key + "']").val(value);
+                                            });
+                                        })
+                                    },
+                                    error: function () {
+
+                                    }
+                                });
+                            });
+
+                            $(".btnDelete").on("click", function () {
+                                let id = this.id.split('_')[1];
+                                $.ajax({
                                     type: "DELETE",
                                     data: { id: id },
+                                    async: false,
                                     url: "@Url.Action("XoaDichvu", "Dichvu")",
                                     success: function (data) {
                                         GetAllDichvu();
@@ -211,12 +279,132 @@
                                         GetAllDichvu();
                                     }
                                 });
-                        });
-
+                            });
+                        }
                     });
                 }
             },
             error: function () { }
+        });
+    }
+
+    function GetAllLichdichVu() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllLichdichvu", "Dichvu")",
+            success: function (res) {
+                if (res.success) {
+                    res.data.map((x, index) => {
+                        x.serialNumber = index + 1;
+                        x.ngayGio = moment(x.ngayGio).format("DD/MM/YYYY HH:mm:ss");
+                        x.maDV = dichvus.find(c => c.id == x.maDV).tenDV;
+                    })
+                    $.Mustache.load(templateLichDichVu + '?v=' + Math.random()).done(function () {
+                        $('#tabLichDichVuContent').html('');
+                        $('#tabLichDichVuContent').mustache('tpl-lichdichvu-table', res);
+
+                        $(".btnAdd").parent().hide();
+                        //$(".btnEdit").parent().hide();
+                        $(".btnDelete").hide();
+                        if (canAddLich) {
+                            $(".btnAdd").parent().show();
+                            //$(".btnEdit").parent().show();
+                            $(".btnDelete").show();
+
+                            $(".btnAdd").on("click", function () {
+                                $.Mustache.load(templateLichDichVuPopup + '?v=' + Math.random()).done(function () {
+                                    $('#modalForm').html('');
+                                    $('#modalForm').mustache('tpl-lichdichvu-popup');
+                                    $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                    $('.modal-title').html("");
+                                    $('.modal-title').html("Thêm mới lịch dịch vụ");
+
+                                    $("#maDV").append($("<option disabled selected>--Chọn--</option>"));
+                                    dichvus.forEach(i => {
+                                        $("#maDV").append($("<option></option>").val(i.id).html(i.tenDV));
+                                    })
+
+                                    $('#ngayGio').datetimepicker({
+                                        icons: { time: 'far fa-clock' },
+                                        format: 'DD/MM/YYYY HH:mm:ss'
+                                    });
+                                })
+                            });                            
+
+                            $(".btnDelete").on("click", function () {
+                                let id = this.id.split('_')[1];
+                                $.ajax({
+                                    type: "DELETE",
+                                    data: { id: id },
+                                    async: false,
+                                    url: "@Url.Action("XoaLichdichvu", "Dichvu")",
+                                    success: function (data) {
+                                        GetAllLichdichVu();
+                                    },
+                                    error: function () {
+                                        GetAllLichdichVu();
+                                    }
+                                });
+                            });
+                        }
+
+                        $(".btnEdit").on("click", function () {
+                            let id = this.id.split('_')[1];
+                            $.ajax({
+                                type: "GET",
+                                data: { id: id },
+                                async: false,
+                                url: "@Url.Action("GetByIdLichdichvu", "Dichvu")",
+                                success: function (data) {
+                                    data.data.ngayGio = moment(data.data.ngayGio).format("DD/MM/YYYY HH:mm:ss");
+                                    $.Mustache.load(templateLichDichVuPopup + '?v=' + Math.random()).done(function () {
+                                        $('#modalForm').html('');
+                                        $('#modalForm').mustache('tpl-lichdichvu-popup');
+                                        $('#modal-default').modal({ backdrop: 'static', keyboard: false });
+                                        $('.modal-title').html("");
+                                        $('.modal-title').html("Chỉnh sửa lịch dịch vụ");
+
+                                        $("#maDV").append($("<option disabled selected>--Chọn--</option>"));
+                                        dichvus.forEach(i => {
+                                            $("#maDV").append($("<option></option>").val(i.id).html(i.tenDV));
+                                        })
+
+                                        $('#ngayGio').datetimepicker({
+                                            icons: { time: 'far fa-clock' },
+                                            format: 'DD/MM/YYYY HH:mm:ss'
+                                        });
+
+                                        $.each(data.data, function (key, value) {
+                                            $('#modalForm').find("input[name='" + key + "']").val(value);
+                                            $('#modalForm').find("select[name='" + key + "']").val(value);
+                                        });
+                                    })
+                                },
+                                error: function () {
+
+                                }
+                            });
+                        });
+                    });
+                }
+            },
+            error: function () { }
+        });
+    }
+
+    function GetAllDichVuData() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllDichvu", "Dichvu")",
+            success: function (res) {
+                dichvus = [];
+                dichvus = res.data;
+            },
+            error: function () {
+                dichvus = [];
+            }
         });
     }
 </script>

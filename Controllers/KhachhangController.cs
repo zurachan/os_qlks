@@ -9,9 +9,11 @@ namespace quanlykhachsan.Controllers
     public class KhachhangController : Controller
     {
         private readonly IKhachhangService _khachhangService;
-        public KhachhangController(IKhachhangService khachhangService)
+        private readonly IPhieudatphongService _phieudatphongService;
+        public KhachhangController(IKhachhangService khachhangService, IPhieudatphongService phieudatphongService)
         {
             _khachhangService = khachhangService;
+            _phieudatphongService = phieudatphongService;
         }
 
 
@@ -45,11 +47,11 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _khachhangService.Create(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm khách hàng thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm khách hàng không thành công" });
             }
         }
         [HttpPut]
@@ -58,24 +60,29 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _khachhangService.Update(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật khách hàng thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật khách hàng không thành công" });
             }
         }
         [HttpDelete]
-        public bool XoaKhachhang(int id)
+        public JsonResult XoaKhachhang(int id)
         {
             try
             {
-                _khachhangService.Delete(id);
-                return true;
+                var pdp = _phieudatphongService.GetAll().Any(x => x.MaKH == id);
+                if (!pdp)
+                {
+                    _khachhangService.Delete(id);
+                    return Json(new { Success = true, Message = "Xóa khách hàng thành công" });
+                }
+                return Json(new { Success = false, Message = "Không thể xóa khách hàng đã đặt phòng" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa khách hàng thất bại" });
             }
         }
     }

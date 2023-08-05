@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using quanlykhachsan.Domains.Entities.Product;
 using quanlykhachsan.Services;
 
@@ -58,11 +57,11 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _dichvuService.CreateDichvu(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm dịch vụ thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm dịch vụ không thành công" });
             }
         }
         [HttpPut]
@@ -71,24 +70,29 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _dichvuService.UpdateDichvu(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật dịch vụ thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật dịch vụ không thành công" });
             }
         }
         [HttpDelete]
-        public bool XoaDichvu(int id)
+        public JsonResult XoaDichvu(int id)
         {
             try
             {
-                _dichvuService.DeleteDichvu(id);
-                return true;
+                var lich = _dichvuService.GetAllLichdichvu().Any(x => x.MaDV == id);
+                if (!lich)
+                {
+                    _dichvuService.DeleteDichvu(id);
+                    return Json(new { Success = true, Message = "Xóa dịch vụ thành công" });
+                }
+                return Json(new { Success = false, Message = "Không thể dịch vụ đã được lên lịch" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa dịch vụ thất bại" });
             }
         }
 
@@ -111,11 +115,11 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _dichvuService.CreateLichdichvu(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm lịch dịch vụ thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm lịch dịch vụ không thành công" });
             }
         }
         [HttpPut]
@@ -124,6 +128,59 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _dichvuService.UpdateLichdichvu(model);
+                return Json(new { Success = true, Message = "Cập nhật lịch dịch vụ thành công" });
+            }
+            catch
+            {
+                return Json(new { Success = false, Message = "Cập nhật lịch dịch vụ không thành công" });
+            }
+        }
+        [HttpDelete]
+        public JsonResult XoaLichdichvu(int id)
+        {
+            try
+            {
+                _dichvuService.DeleteLichdichvu(id);
+                return Json(new { Success = true, Message = "Xóa lịch dịch vụ thành công" });
+            }
+            catch
+            {
+                return Json(new { Success = true, Message = "Xóa lịch dịch vụ không thành công" });
+            }
+        }
+
+        //Dat dich vu
+        [HttpGet]
+        public JsonResult GetAllDatdichvu()
+        {
+            var res = _dichvuService.GetAllDatdichvu();
+            return Json(new { Success = true, data = res });
+        }
+        [HttpGet]
+        public JsonResult GetByIdDatdichvu(int id)
+        {
+            var res = _dichvuService.GetByIdDatdichvu(id);
+            return Json(new { Success = true, data = res });
+        }
+        [HttpPost]
+        public JsonResult LuuDatdichvu(Datdichvu model)
+        {
+            try
+            {
+                _dichvuService.CreateDatdichvu(model);
+                return Json(new { Success = true });
+            }
+            catch
+            {
+                return Json(new { Success = false });
+            }
+        }
+        [HttpPut]
+        public JsonResult SuaDatdichvu(Datdichvu model)
+        {
+            try
+            {
+                _dichvuService.UpdateDatdichvu(model);
                 return Json(new { Success = true });
             }
             catch
@@ -132,11 +189,11 @@ namespace quanlykhachsan.Controllers
             }
         }
         [HttpDelete]
-        public bool XoaLichdichvu(int id)
+        public bool XoaDatdichvu(int id)
         {
             try
             {
-                _dichvuService.DeleteLichdichvu(id);
+                _dichvuService.DeleteDatdichvu(id);
                 return true;
             }
             catch

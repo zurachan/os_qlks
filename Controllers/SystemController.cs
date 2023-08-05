@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using quanlykhachsan.Domains.Entities.Master;
 using quanlykhachsan.Services;
 
@@ -10,11 +9,13 @@ namespace quanlykhachsan.Controllers
         private readonly IChucvuService _chucvuService;
         private readonly IQuyenService _quyenService;
         private readonly ITaikhoanService _taikhoanService;
-        public SystemController(IChucvuService chucvuService, IQuyenService quyenService, ITaikhoanService taikhoanService)
+        private readonly INhanvienService _nhanvienService;
+        public SystemController(IChucvuService chucvuService, IQuyenService quyenService, ITaikhoanService taikhoanService, INhanvienService nhanvienService)
         {
             _chucvuService = chucvuService;
             _quyenService = quyenService;
             _taikhoanService = taikhoanService;
+            _nhanvienService = nhanvienService;
         }
 
         //Quyen
@@ -48,11 +49,11 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _quyenService.Create(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm quyền thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm quyền không thành công" });
             }
         }
         [HttpPut]
@@ -61,24 +62,29 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _quyenService.Update(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật quyền thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật quyền không thành công" });
             }
         }
         [HttpDelete]
-        public bool XoaQuyen(int id)
+        public JsonResult XoaQuyen(int id)
         {
             try
             {
-                _quyenService.Delete(id);
-                return true;
+                var quyen = _taikhoanService.GetAll().Any(x => x.MaQuyen == id);
+                if (!quyen)
+                {
+                    _quyenService.Delete(id);
+                    return Json(new { Success = true, Message = "Xóa quyền thành công" });
+                }
+                return Json(new { Success = false, Message = "Không thể xóa quyền đã tồn tại tài khoản" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa quyền thất bại" });
             }
         }
 
@@ -107,11 +113,11 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _chucvuService.Create(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm chức vụ thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm chức vụ không thành công" });
             }
         }
         [HttpPut]
@@ -120,24 +126,30 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _chucvuService.Update(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật chức vụ thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật chức vụ không thành công" });
             }
         }
         [HttpDelete]
-        public bool XoaChucVu(int id)
+        public JsonResult XoaChucVu(int id)
         {
             try
             {
-                _chucvuService.Delete(id);
-                return true;
+                var nv = _nhanvienService.GetAll().Any(x => x.MaCV == id);
+                if (!nv)
+                {
+                    _chucvuService.Delete(id);
+
+                    return Json(new { Success = true, Message = "Xóa chức vụ thành công" });
+                }
+                return Json(new { Success = false, Message = "Không thể xóa chức vụ đã tồn tại nhân viên" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa chức vụ thất bại" });
             }
         }
 
@@ -170,12 +182,18 @@ namespace quanlykhachsan.Controllers
         {
             try
             {
+                var duplicate = _taikhoanService.GetAll().Any(x => x.TenDangNhap == model.TenDangNhap);
+                if (duplicate)
+                {
+                    return Json(new { Success = false, Message = "Tên đăng nhập bị trùng" });
+                }
+
                 _taikhoanService.Create(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm tài khoản thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm tài khoản không thành công" });
             }
         }
         [HttpPut]
@@ -183,30 +201,30 @@ namespace quanlykhachsan.Controllers
         {
             try
             {
-                var duplicate = _taikhoanService.GetAll().Any(x => x.TenDangNhap == model.TenDangNhap);
+                var duplicate = _taikhoanService.GetAll().Any(x => x.TenDangNhap == model.TenDangNhap && x.Id != model.Id);
                 if (duplicate)
                 {
                     return Json(new { Success = false, Message = "Tên đăng nhập bị trùng" });
                 }
                 _taikhoanService.Update(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật tài khoản thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật tài khoản không thành công" });
             }
         }
         [HttpDelete]
-        public bool XoaTaiKhoan(int id)
+        public JsonResult XoaTaiKhoan(int id)
         {
             try
             {
                 _taikhoanService.Delete(id);
-                return true;
+                return Json(new { Success = true, Message = "Xóa tài khoản thành công" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa tài khoản không thành công" });
             }
         }
     }

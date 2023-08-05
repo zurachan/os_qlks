@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using quanlykhachsan.Domains.Entities.Product;
+using quanlykhachsan.Models;
 using quanlykhachsan.Services;
+using System.Net;
 
 namespace quanlykhachsan.Controllers
 {
     public class PhongController : Controller
     {
         private readonly IPhongService _phongService;
-        public PhongController(IPhongService phongService)
+        private readonly IPhieudatphongService _phieudatphongService;
+        public PhongController(IPhongService phongService, IPhieudatphongService phieudatphongService)
         {
             _phongService = phongService;
-
+            _phieudatphongService = phieudatphongService;
         }
 
 
@@ -47,7 +50,7 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _phongService.CreateLoaiphong(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm mới loại phòng thành công" });
             }
             catch
             {
@@ -60,24 +63,30 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _phongService.UpdateLoaiphong(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật loại phòng thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật loại phòng không thành công" });
             }
         }
         [HttpDelete]
-        public bool XoaLoaiphong(int id)
+        public JsonResult XoaLoaiphong(int id)
         {
             try
             {
-                _phongService.DeleteLoaiphong(id);
-                return true;
+                var phong = _phongService.GetAllPhong().Any(x => x.MaLP == id);
+                if (!phong)
+                {
+                    _phongService.DeleteLoaiphong(id);
+                    return Json(new { Success = true, Message = "Xóa loại phòng thành công" });
+                }
+
+                return Json(new { Success = false, Message = "Không thể xóa loại phòng đã tồn tại phòng" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa loại phòng lỗi" });
             }
         }
 
@@ -100,11 +109,11 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _phongService.CreatePhong(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm phòng thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm phòng không thành công" });
             }
         }
         [HttpPut]
@@ -113,25 +122,43 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _phongService.UpdatePhong(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật phòng thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật phòng không thành công" });
             }
         }
         [HttpDelete]
-        public bool XoaPhong(int id)
+        public JsonResult XoaPhong(int id)
         {
             try
             {
-                _phongService.DeletePhong(id);
-                return true;
+                var pdp = _phieudatphongService.GetAll().Any(x => x.MaPhong == id);
+                if (!pdp)
+                {
+                    _phongService.DeletePhong(id);
+                    return Json(new { Success = true, Message = "Xóa phòng thành công" });
+                }
+                return Json(new { Success = false, Message = "Không thể xóa phòng đã tồn tại phiếu đặt phòng" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa phòng lỗi" });
             }
+        }
+
+        [HttpGet]
+        public JsonResult SearchPhong(CustomerSearchPhong model)
+        {
+            var res = _phongService.GetAllPhong();
+
+            if (model.SucChua != null)
+                res = res.Where(x => x.SucChua == model.SucChua).ToList();
+            if (model.Tang != null)
+                res = res.Where(x => x.Tang == model.Tang).ToList();
+
+            return Json(new { Success = true, data = res });
         }
     }
 }

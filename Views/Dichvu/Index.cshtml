@@ -100,6 +100,12 @@
             i.classList.remove("active")
         }
     })
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
     //
 
     //Call server get data
@@ -132,11 +138,27 @@
                                 data: model,
                                 url: "@Url.Action("SuaDichvu", "Dichvu")",
                                 success: function (data) {
-                                    $('#modal-default').modal('toggle');
-                                    $('#modalForm').find('input').val("");
-                                    GetAllDichvu();
+                                    if (data.success) {
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: data.message
+                                        })
+                                        $('#modal-default').modal('toggle');
+                                        $('#modalForm').find('input').val("");
+                                        GetAllDichvu();
+                                    } else {
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: data.message
+                                        })
+                                    }
+
                                 },
                                 error: function () {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
                                     $('#modalForm').find('input').val("");
                                     GetAllDichvu();
                                 }
@@ -151,11 +173,27 @@
                                 data: model,
                                 url: "@Url.Action("LuuDichvu", "Dichvu")",
                                 success: function (data) {
-                                    $('#modal-default').modal('toggle');
-                                    $('#modalForm').find('input').val("");
-                                    GetAllDichvu();
+                                    if (data.success) {
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: data.message
+                                        })
+                                        $('#modal-default').modal('toggle');
+                                        $('#modalForm').find('input').val("");
+                                        GetAllDichvu();
+                                    } else {
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: data.message
+                                        })
+                                    }
+
                                 },
                                 error: function () {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
                                     $('#modalForm').find('input').val("");
                                     GetAllDichvu();
                                 }
@@ -173,12 +211,27 @@
                             data: model,
                             url: "@Url.Action("SuaLichdichvu", "Dichvu")",
                             success: function (data) {
-                                $('#modal-default').modal('toggle');
-                                $('#modalForm').find('input').val("");
-                                $('#modalForm').find('select').val("");
-                                GetAllLichdichVu();
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                    $('#modal-default').modal('toggle');
+                                    $('#modalForm').find('input').val("");
+                                    $('#modalForm').find('select').val("");
+                                    GetAllLichdichVu();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#modalForm').find('input').val("");
                                 GetAllLichdichVu();
                             }
@@ -189,12 +242,27 @@
                             data: model,
                             url: "@Url.Action("LuuLichdichvu", "Dichvu")",
                             success: function (data) {
-                                $('#modal-default').modal('toggle');
-                                $('#modalForm').find('input').val("");
-                                $('#modalForm').find('select').val("");
-                                GetAllLichdichVu();
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                    $('#modal-default').modal('toggle');
+                                    $('#modalForm').find('input').val("");
+                                    $('#modalForm').find('select').val("");
+                                    GetAllLichdichVu();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#modalForm').find('input').val("");
                                 GetAllLichdichVu();
                             }
@@ -273,6 +341,17 @@
                                     async: false,
                                     url: "@Url.Action("XoaDichvu", "Dichvu")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAllDichvu();
                                     },
                                     error: function () {
@@ -330,7 +409,7 @@
                                         format: 'DD/MM/YYYY HH:mm:ss'
                                     });
                                 })
-                            });                            
+                            });
 
                             $(".btnDelete").on("click", function () {
                                 let id = this.id.split('_')[1];
@@ -340,9 +419,24 @@
                                     async: false,
                                     url: "@Url.Action("XoaLichdichvu", "Dichvu")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAllLichdichVu();
                                     },
                                     error: function () {
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: data.message
+                                        })
                                         GetAllLichdichVu();
                                     }
                                 });

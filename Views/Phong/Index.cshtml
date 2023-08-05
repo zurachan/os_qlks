@@ -106,8 +106,13 @@
     var loaiphongs = [];
     var phongs = [];
     var khachhangs = [];
-
-
+    var dichvus = [];
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
     let navlink = document.querySelectorAll(".side-nav-item");
     navlink.forEach(i => {
         if (i.href.includes("@controller")) {
@@ -128,6 +133,7 @@
         $('#tabLichDatPhong').on('click', function () {
             GetAllKhachhang();
             GetAllPhongData();
+            GetAllDichVuData();
             GetAllPhieudatphong();
         })
 
@@ -149,6 +155,12 @@
                             async: false,
                             url: "@Url.Action("SuaLoaiphong", "Phong")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 $('#modalForm').find('select').html("");
@@ -167,6 +179,12 @@
                             async: false,
                             url: "@Url.Action("LuuLoaiphong", "Phong")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 $('#modalForm').find('select').html("");
@@ -188,6 +206,12 @@
                             async: false,
                             url: "@Url.Action("Suaphong", "Phong")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 $('#modalForm').find('select').html("");
@@ -206,6 +230,12 @@
                             async: false,
                             url: "@Url.Action("Luuphong", "Phong")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 $('#modalForm').find('select').html("");
@@ -219,7 +249,7 @@
                         });
                     }
                     break;
-                case 6://Phieudatphong object
+                case 8://Phieudatphong object
                     if (model.id) {
                         $.ajax({
                             type: "PUT",
@@ -227,6 +257,12 @@
                             async: false,
                             url: "@Url.Action("SuaPhieudatphong", "Phieudatphong")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 $('#modalForm').find('select').html("");
@@ -245,6 +281,12 @@
                             async: false,
                             url: "@Url.Action("LuuPhieudatphong", "Phieudatphong")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 $('#modalForm').find('select').html("");
@@ -329,6 +371,17 @@
                                     async: false,
                                     url: "@Url.Action("XoaLoaiphong", "Phong")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAllLoaiphong();
                                     },
                                     error: function () {
@@ -424,6 +477,17 @@
                                     data: { id: id },
                                     url: "@Url.Action("XoaPhong", "Phong")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAllPhong();
                                     },
                                     error: function () {
@@ -477,6 +541,11 @@
                                 $("#ngayNhanPhong").datepicker({ dateFormat: 'dd/mm/yy' });
                                 $("#ngayTraPhong").datepicker({ dateFormat: 'dd/mm/yy' });
 
+                                $("#maDV").append($("<option disabled selected>--Chọn--</option>"));
+                                dichvus.forEach(i => {
+                                    $("#maDV").append($("<option></option>").val(i.id).html(i.tenDV));
+                                })
+
                                 $('#modal-default').modal({ backdrop: 'static', keyboard: false });
                                 $('.modal-title').html("");
                                 $('.modal-title').html("Tạo phiếu đặt phòng");
@@ -503,8 +572,17 @@
                                         phongs.forEach(i => {
                                             $("#maPhong").append($("<option></option>").val(i.id).html("Phòng " + i.loaiPhong + ", tầng " + i.tang + ", sức chứa " + i.sucChua + " người"));
                                         })
+
+                                        $("#ngayNhanPhong").datepicker({ dateFormat: 'dd/mm/yy' });
+                                        $("#ngayTraPhong").datepicker({ dateFormat: 'dd/mm/yy' });
+
+                                        $("#maDV").append($("<option disabled selected>--Chọn--</option>"));
+                                        dichvus.forEach(i => {
+                                            $("#maDV").append($("<option></option>").val(i.id).html(i.tenDV));
+                                        })
+
                                         data.data.ngayNhanPhong = moment(data.data.ngayNhanPhong).format('DD/MM/YYYY')
-                                        data.data.ngayTraPhong = moment(data.data.ngayVaoLam).format('DD/MM/YYYY')
+                                        data.data.ngayTraPhong = moment(data.data.ngayTraPhong).format('DD/MM/YYYY')
 
                                         $('#modal-default').modal({ backdrop: 'static', keyboard: false });
                                         $('.modal-title').html("");
@@ -530,6 +608,17 @@
                                     async: false,
                                     url: "@Url.Action("XoaPhieudatphong", "Phieudatphong")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAllPhieudatphong();
                                     },
                                     error: function () {
@@ -580,4 +669,19 @@
         });
     }
 
+    function GetAllDichVuData() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "@Url.Action("GetAllDichvu", "Dichvu")",
+            success: function (res) {
+                if (res.success) {
+                    dichvus = res.data;
+                }
+            },
+            error: function () {
+                dichvus = [];
+            }
+        });
+    }
 </script>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using quanlykhachsan.Domains;
 
@@ -11,9 +12,10 @@ using quanlykhachsan.Domains;
 namespace quanlykhachsan.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230804082624_updateLichDichVu_maDV_int")]
+    partial class updateLichDichVu_maDV_int
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,8 +179,9 @@ namespace quanlykhachsan.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("GiaDV")
-                        .HasColumnType("int")
+                    b.Property<string>("GiaDV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("giadv");
 
                     b.Property<string>("TenDV")

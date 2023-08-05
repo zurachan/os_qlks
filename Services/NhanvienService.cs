@@ -34,9 +34,12 @@ namespace quanlykhachsan.Services
                 if (entity == null) return false;
 
                 var account = _context.Taikhoans.FirstOrDefault(x => x.MaNV == entity.Id);
-                if (account == null) return false;
+                if (account != null)
+                {
+                    _context.Taikhoans.Remove(account);
 
-                _context.Taikhoans.Remove(account);
+                };
+
                 _context.Nhanviens.Remove(entity);
                 _context.SaveChanges();
                 return true;

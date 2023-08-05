@@ -47,6 +47,16 @@
                     </div>
                     <div class="tab-pane fade" id="tabDoanhThuContent" role="tabpanel"
                          aria-labelledby="tabDoanhThu">
+                        <div class="row">
+                            <div class="col-md-4 d-flex align-items-end">
+                                <label>Tháng</label>
+                                <input type="month" class="ml-2 form-control thangFilter" />
+                            </div>
+                        </div>
+
+                        <div class="chart">
+                            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,7 +72,6 @@
     //set active side menu
     let navlink = document.querySelectorAll(".side-nav-item");
     navlink.forEach(i => {
-        debugger
         if (i.href.includes("@controller")) {
             i.classList.add("active");
         } else {
@@ -79,9 +88,78 @@
             GetAllHoadon();
         })
         $('#tabDoanhThu').on('click', function () {
+            GetDoanhThu();
+        })
 
+        let monthControl = $('.thangFilter');
+        let date = new Date()
+        let month = ("0" + (date.getMonth() + 1)).slice(-2)
+        let year = date.getFullYear()
+        monthControl.val(year + "-" + month)
+
+        monthControl.on('change', function () {
+            GetDoanhThu();
         })
     });
+
+    function GetDoanhThu() {
+        let monthValue = $('.thangFilter').val();
+        let nam = monthValue.split('-')[0];
+        let thang = monthValue.split('-')[1];
+
+        $.ajax({
+            type: "GET",
+            data: { nam: nam, thang: thang },
+            async: false,
+            url: "@Url.Action("DoanhThu", "Taichinh")",
+            success: function (res) {
+                let dateArr = [];
+                let valueArr = [];
+                res.data.map(x => {
+                    x.ngay = moment(x.ngay).format('DD/MM/YYYY');
+                    dateArr.push(x.ngay);
+                    valueArr.push(x.tongTien);
+                })
+
+                var chartData = {
+                    labels: dateArr,
+                    datasets: [
+                        {
+                            label: 'Doanh thu ngày',
+                            backgroundColor: 'rgba(60,141,188,0.9)',
+                            borderColor: 'rgba(60,141,188,0.8)',
+                            pointRadius: false,
+                            pointColor: '#3b8bba',
+                            pointStrokeColor: 'rgba(60,141,188,1)',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(60,141,188,1)',
+                            data: valueArr
+                        }
+                    ]
+                }
+
+                var barChartCanvas = $('#barChart').get(0).getContext('2d')
+                var barChartData = $.extend(true, {}, chartData)
+
+                var temp0 = chartData.datasets[0]
+
+                barChartData.datasets[0] = temp0
+
+                var barChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                }
+
+                new Chart(barChartCanvas, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: barChartOptions
+                })
+            },
+            error: function () { }
+        })
+    }
 
     function GetAllHoadon() {
         $.ajax({

@@ -55,11 +55,11 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _nhanvienService.Create(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Thêm nhân viên thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Thêm nhân viên không thành công" });
             }
         }
 
@@ -69,25 +69,28 @@ namespace quanlykhachsan.Controllers
             try
             {
                 _nhanvienService.Update(model);
-                return Json(new { Success = true });
+                return Json(new { Success = true, Message = "Cập nhật nhân viên thành công" });
             }
             catch
             {
-                return Json(new { Success = false });
+                return Json(new { Success = false, Message = "Cập nhật nhân viên không thành công" });
             }
         }
 
         [HttpDelete]
-        public bool XoaNhanVien(int id)
+        public JsonResult XoaNhanVien(int id)
         {
             try
             {
+                var tk = _taikhoanService.GetAll().FirstOrDefault(x => x.MaNV == id);
+                if (tk != null)
+                    _taikhoanService.Delete(tk.Id);
                 _nhanvienService.Delete(id);
-                return true;
+                return Json(new { Success = true, Message = "Xóa nhân viên thành công" });
             }
             catch
             {
-                return false;
+                return Json(new { Success = false, Message = "Xóa nhân viên thất bại" });
             }
         }
     }

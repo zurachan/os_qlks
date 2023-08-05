@@ -96,6 +96,12 @@
             i.classList.remove("active")
         }
     })
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
     //
 
     //Call server get data
@@ -126,12 +132,27 @@
                             data: data,
                             url: "@Url.Action("SuaChucVu", "System")",
                             success: function (data) {
-                                $('#modal-default').modal('toggle');
-                                $('#tencv').val("");
-                                $('#idcv').val("")
-                                GetAll();
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                    $('#modal-default').modal('toggle');
+                                    $('#tencv').val("");
+                                    $('#idcv').val("")
+                                    GetAll();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#tencv').val("");
                                 $('#idcv').val("");
                                 GetAll();
@@ -151,11 +172,26 @@
                             data: data,
                             url: "@Url.Action("LuuChucVu", "System")",
                             success: function (data) {
-                                $('#modal-default').modal('toggle');
-                                $('#tencv').val("");
-                                GetAll();
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                    $('#modal-default').modal('toggle');
+                                    $('#tencv').val("");
+                                    GetAll();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#tencv').val("");
                                 GetAll();
                             }
@@ -200,6 +236,17 @@
                                     data: { id: id },
                                     url: "@Url.Action("XoaChucVu", "System")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAll();
                                     },
                                     error: function () {

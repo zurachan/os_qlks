@@ -19,6 +19,6 @@ namespace quanlykhachsan.Domains.Entities.Product
         [Column("ghichu")]
         public string GhiChu { get; set; }
         [Column("madv")]
-        public string MaDV { get; set; }
+        public int MaDV { get; set; }
     }
 }

@@ -13,6 +13,6 @@ namespace quanlykhachsan.Domains.Entities.Product
         [Column("tendv")]
         public string TenDV { get; set; }
         [Column("giadv")]
-        public string GiaDV { get; set; }
+        public int GiaDV { get; set; }
     }
 }

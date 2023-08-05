@@ -114,6 +114,13 @@
         }
     })
 
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
+
     $(document).ready(function () {
         GetAllKhachhang();
         $(".btnAdd").on("click", function () {
@@ -138,11 +145,27 @@
                             data: model,
                             url: "@Url.Action("SuaKhachhang", "Khachhang")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 GetAllKhachhang();
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#modalForm').find('input').val("");
                                 GetAllKhachhang();
                             }
@@ -158,11 +181,26 @@
                             data: model,
                             url: "@Url.Action("LuuKhachhang", "Khachhang")",
                             success: function (data) {
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                                 $('#modal-default').modal('toggle');
                                 $('#modalForm').find('input').val("");
                                 GetAllKhachhang();
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#modalForm').find('input').val("");
                                 GetAllKhachhang();
                             }
@@ -218,6 +256,17 @@
                                     data: { id: id },
                                     url: "@Url.Action("XoaKhachhang", "Khachhang")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAllKhachhang();
                                     },
                                     error: function () {

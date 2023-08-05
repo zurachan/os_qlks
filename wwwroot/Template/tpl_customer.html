@@ -1,0 +1,73 @@
+﻿<script type="text/html" id="tpl-customer-listroom">
+    {{#data}}
+    <div class="room-item">
+        <div class="room-type">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="room-image">
+                        <img src="~/customer/images/PhongSuites1.jpg" style="width:100%">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="room-title">
+                        <a href="#">Phòng {{loaiPhong}}</a>
+                    </div>
+                    <div class="room-content">
+                        <div class="room-icon">
+                            <span class="material-symbols-outlined">
+                                person
+                            </span>
+                            <span>Sức chứa {{sucChua}}</span>
+                            <span class="material-symbols-outlined">
+                                bed
+                            </span>
+                            <span>Tầng {{tang}}</span>
+                        </div>
+                        <div class="room-description">
+                            <div class="room-description-1">
+                                <span class="material-symbols-outlined">
+                                    star
+                                </span>
+                                <span>{{moTaLoaiPhong}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="room-rate">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="rate-title">
+                        <a href="#">Standard rate</a>
+                    </div>
+                    <div class="rate-content">
+                        <div class="rate-content-1">
+                            <span class="material-symbols-outlined">
+                                task_alt
+                            </span>
+                            <span>Free Cancellation!</span>
+                        </div>
+                        <div class="rate-content-2">
+                            <span class="material-symbols-outlined">
+                                task_alt
+                            </span>
+                            <span>BREAKFAST</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="rate-price">
+                        <div class="rate-cost">
+                            {{giaPhong}} VND
+                        </div>
+                        <div class="rate-description">
+                            Cost for 1 night, {{sucChua}} guests
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/data}}
+</script>

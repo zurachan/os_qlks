@@ -10,6 +10,7 @@ namespace quanlykhachsan.Services
         Hoadon Create(Hoadon model);
         Hoadon Update(Hoadon model);
         bool Delete(int id);
+        List<Hoadon> GetAllHoaDonThang(int nam, int thang);
     }
 
     public class HoadonService : IHoadonService
@@ -47,6 +48,11 @@ namespace quanlykhachsan.Services
         public List<Hoadon> GetAll()
         {
             return _context.Hoadons.ToList();
+        }
+
+        public List<Hoadon> GetAllHoaDonThang(int nam, int thang)
+        {
+            return _context.Hoadons.Where(x => x.NgayThanhToan.Year == nam && x.NgayThanhToan.Month == thang).ToList();
         }
 
         public Hoadon GetById(int id)

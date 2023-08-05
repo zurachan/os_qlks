@@ -112,7 +112,12 @@
             i.classList.remove("active")
         }
     })
-
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
     //Call server get data
     $(document).ready(function () {
         GetAllQuyen();
@@ -136,7 +141,7 @@
         });
 
         $(".btnSaveAdd").on("click", function () {
-            let form = $('#modalForm').serializeArray();
+            let form = uiUtils.serializeArrayIncludingDisabledFields($('#modalForm'))
             let model = uiUtils.objectifyForm(form)
             if (model.id) {
                 if (model.tenDangNhap) {
@@ -146,18 +151,35 @@
                         async: false,
                         url: "@Url.Action("SuaTaiKhoan", "System")",
                         success: function (data) {
-                            debugger
-                            $('#modal-default').modal('toggle');
-                            $('#modalForm').find('input').val("");
-                            $("#maNV").html("")
-                            $("#maQuyen").html("")
-                            GetAllNhanVien(true);
-                            GetAllTaiKhoan();
+                            if (data.success) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: data.message
+                                })
+                                $('#modal-default').modal('toggle');
+                                $('#modalForm').find('input').val("");
+                                $("#maNV").html("")
+                                $("#maQuyen").html("")
+                                $('#maNV').prop('disabled', false)
+                                GetAllNhanVien(true);
+                                GetAllTaiKhoan();
+
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
+                            }
                         },
                         error: function () {
+                            Toast.fire({
+                                icon: 'error',
+                                title: data.message
+                            })
                             $('#modalForm').find('input').val("");
                             $("#maNV").html("")
                             $("#maQuyen").html("")
+                            $('#maNV').prop('disabled', false)
                             GetAllNhanVien(true);
                             GetAllTaiKhoan();
                         }
@@ -174,16 +196,30 @@
                             async: false,
                             url: "@Url.Action("LuuTaiKhoan", "System")",
                             success: function (data) {
-                                debugger
-                                $('#modal-default').modal('toggle');
-                                $('#modalForm').find('input').val("");
-                                $("#maNV").html("")
-                                $("#maQuyen").html("")
-                                GetAllNhanVien(true);
-                                GetAllTaiKhoan();
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                    $('#modal-default').modal('toggle');
+                                    $('#modalForm').find('input').val("");
+                                    $("#maNV").html("")
+                                    $("#maQuyen").html("")
+                                    GetAllNhanVien(true);
+                                    GetAllTaiKhoan();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
+
                             },
                             error: function () {
-                                debugger;
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#modalForm').find('input').val("");
                                 $("#maNV").html("")
                                 $("#maQuyen").html("")
@@ -230,6 +266,9 @@
                                     $('#modal-default').modal({ backdrop: 'static', keyboard: false });
                                     $('.modal-title').html("");
                                     $('.modal-title').html("Chỉnh sửa nhân viên");
+
+                                    $('#maNV').prop('disabled', true)
+
                                     $.each(data.data, function (key, value) {
                                         $('#modalForm').find("input[name='" + key + "']").val(value);
                                         $('#modalForm').find("select[name='" + key + "']").val(value);
@@ -250,10 +289,25 @@
                                     data: { id: id },
                                     url: "@Url.Action("XoaTaiKhoan", "System")",
                                     success: function (data) {
-                                        GetAllNhanVien(true);
-                                        GetAllTaiKhoan();
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                            GetAllNhanVien(true);
+                                            GetAllTaiKhoan();
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                     },
                                     error: function () {
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: data.message
+                                        })
                                         GetAllNhanVien(true);
                                         GetAllTaiKhoan();
                                     }

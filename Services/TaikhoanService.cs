@@ -25,7 +25,7 @@ namespace quanlykhachsan.Services
             var entity = new Taikhoan
             {
                 TenDangNhap = model.TenDangNhap,
-                MatKhau = model.TenDangNhap,
+                MatKhau = model.MatKhau,
                 MaNV = model.MaNV,
                 MaQuyen = model.MaQuyen,
             };

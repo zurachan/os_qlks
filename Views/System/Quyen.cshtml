@@ -94,6 +94,12 @@
             i.classList.remove("active")
         }
     })
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
     //
 
     //Call server get data
@@ -113,7 +119,6 @@
         $(".btnSaveAdd").on("click", function () {
             let form = $('#modalForm').serializeArray();
             let model = uiUtils.objectifyForm(form);
-            debugger
             if (model.id) {
                 if (model.tenQuyen) {
                     $.ajax(
@@ -122,11 +127,26 @@
                             data: model,
                             url: "@Url.Action("SuaQuyen", "System")",
                             success: function (data) {
-                                $('#modal-default').modal('toggle');
-                                $('#modalForm').find('input').val("");
-                                GetAllQuyen();
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                    $('#modal-default').modal('toggle');
+                                    $('#modalForm').find('input').val("");
+                                    GetAllQuyen();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#modalForm').find('input').val("");
                                 GetAllQuyen();
                             }
@@ -142,11 +162,26 @@
                             data: model,
                             url: "@Url.Action("LuuQuyen", "System")",
                             success: function (data) {
-                                $('#modal-default').modal('toggle');
-                                $('#modalForm').find('input').val("");
-                                GetAllQuyen();
+                                if (data.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.message
+                                    })
+                                    $('#modal-default').modal('toggle');
+                                    $('#modalForm').find('input').val("");
+                                    GetAllQuyen();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: data.message
+                                    })
+                                }
                             },
                             error: function () {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
                                 $('#modalForm').find('input').val("");
                                 GetAllQuyen();
                             }
@@ -203,6 +238,17 @@
                                     data: { id: id },
                                     url: "@Url.Action("XoaQuyen", "System")",
                                     success: function (data) {
+                                        if (data.success) {
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: data.message
+                                            })
+                                        } else {
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: data.message
+                                            })
+                                        }
                                         GetAllQuyen();
                                     },
                                     error: function () {
